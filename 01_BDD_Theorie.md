@@ -1,0 +1,117 @@
+# Introduction aux bases de données et aux SGBD
+## Les tableurs
+
+Beaucoup d’organisations commencent avec un tableur parce qu’il est immédiat : on saisit, on calcule, on filtre, on partage. Mais au-delà des premiers usages, les limites apparaissent vite. Un tableur ne garantit pas l’unicité d’un client, ne protège pas les relations entre données (une commande ne « pointe » vers rien de garanti), ne gère pas bien les accès simultanés, et ne fournit pas de vraie gouvernance (contrôles, droits fins, sauvegardes éprouvées).
+
+Dans un fichier “Commandes2025.xlsx”, chaque ligne pourrait représenter une ligne de commande avec le nom du client, son e-mail, l’adresse, le produit, la quantité, le prix et la date. Au fil du temps, on observe des variantes orthographiques d’un même client, des adresses qui divergent selon les lignes, des produits obsolètes encore utilisés, et des formules cassées par un déplacement de colonnes. Plus il y a de lignes, plus les opérations deviennent lentes et fragiles. Les versions circulent par e-mail et divergent sans qu’on le remarque.
+
+Quelques vérités utiles à retenir :
+- Excel est pertinent pour **explorer rapidement** et **présenter** des résultats.
+- Excel devient risqué dès qu’il sert de **source de vérité partagée**, avec des **données liées** et **évolutives**.
+- Les incohérences, la duplication et l’absence de contrôles finissent par coûter cher.
+
+C’est précisément pour répondre à ces limites qu’existent les bases de données et les SGBD.
+
+---
+
+## Qu’est-ce qu’une base de données ?
+
+Une base de données est une **organisation logique et durable** d’informations. Son objectif est de permettre de **stocker**, **retrouver**, **mettre à jour**, **partager** et **protéger** ces informations à mesure que l’activité grandit. Contrairement à un simple fichier, une base de données impose un **schéma** (quelles colonnes, quels types, quelles règles) et fait respecter des **contraintes** (unicité, non-nullité, domaines de valeurs). Elle supporte l’accès **concurrent** de plusieurs utilisateurs, gère des **volumes croissants** et garantit la **persistance**.
+
+Exemple concret : sur un site e-commerce, l’inscription d’un client enregistre son nom, son e-mail et un mot de passe. Une commande consigne les produits, les quantités, les prix et la date. Lorsqu’il revient, son **historique** est intact. Une base de données relie et sécurise ces informations : une commande ne peut exister sans client valide ; une quantité doit être strictement positive ; un produit supprimé ne peut pas être référencé par une nouvelle ligne.
+
+Repères utiles :
+- **Organisation structurée** : colonnes typées plutôt que cellules libres.
+- **Règles explicites** : contraintes d’intégrité au plus près des données.
+- **Accès concurrent** : lectures/écritures simultanées sans corruption.
+- **Scalabilité** : montée en charge sans casser la structure.
+- **Durabilité** : les changements validés survivent aux pannes.
+
+---
+
+## Qu’est-ce qu’un SGBD ?
+
+Une base de données ne “tourne” pas seule. Il faut un moteur qui la crée, la maintienne, exécute les requêtes, gère la sécurité, l’optimisation, les journaux et la concurrence. Ce moteur est le **Système de Gestion de Base de Données** (**SGBD**). Il sert d’interface entre les données et leurs utilisateurs (humains ou applications).
+
+Un SGBD sérieux propose :
+- **Gestion du stockage** : fichiers, mémoire, caches, journaux de transactions.
+- **Sécurité** : authentification, rôles, droits granulaires, chiffrement en transit/au repos.
+- **Transactions (ACID)** : « tout ou rien », cohérence et durabilité garanties.
+- **Langage d’accès** : en relationnel, **SQL** est le standard.
+- **Sauvegardes et restauration** : planifiées et testées.
+- **Optimisation** : index, statistiques, plans d’exécution, parallélisme.
+- **Disponibilité** : réplication, bascule (failover), supervision.
+
+Exemples : MySQL, PostgreSQL, SQL Server et Oracle pour le relationnel ; MongoDB (documents), Redis (clé-valeur), Neo4j (graphes) côté NoSQL.
+
+---
+
+## Différence entre un SGBD et un SGBDR
+
+**SGBD** est le terme générique pour désigner le moteur. **SGBDR** (Système de Gestion de Base de Données **Relationnelles**) désigne un SGBD qui implémente le **modèle relationnel** : données en tables, clés primaires et étrangères, contraintes, transactions ACID, et **SQL** comme langue commune.
+
+- Un **SGBDR** organise les entités en **tables** reliées par des **clés**, impose des **contraintes** d’intégrité et expose **SQL**.
+- Un **SGBD non relationnel** peut stocker des **documents** JSON (flexibles), des **paires clé-valeur** (caches ultra-rapides), des **graphes** (relations profondes), etc. Cela offre de la souplesse, mais confie souvent à l’application la responsabilité de la cohérence.
+
+Conclusion :
+- Tous les **SGBDR** sont des **SGBD**, mais tous les **SGBD** ne sont pas relationnels.
+- Pour une application métier transactionnelle (ventes, facturation, RH, inventaire, réservations), le **relationnel** reste le **choix par défaut**.
+
+---
+
+## Le modèle relationnel
+
+Le modèle relationnel représente les données sous forme de **tables** (relations). 
+
+Chaque **ligne** (enregistrement) est une instance.
+
+Chaque **colonne** (attribut) est une propriété. 
+Chaque table a une **clé primaire** qui identifie de façon unique ses lignes. 
+Les **clés étrangères** expriment les **relations** entre tables.
+
+
+## Le Langage SQL
+Le SQL (Structured Query Language) est un langage déclaratif et standardisé qui permet de décrire la structure d’une base relationnelle, de manipuler les données, de les interroger, de gérer les transactions et de contrôler les accès. On distingue cinq volets complémentaires.
+
+### Définir la structure (DDL)
+Le **Data Definition Language** sert à créer/faire évoluer tables, contraintes, index, vues et schémas.
+
+```sql
+CREATE TABLE client (
+  client_id     SERIAL PRIMARY KEY,
+  nom           VARCHAR(100) NOT NULL,
+  email         VARCHAR(255) UNIQUE NOT NULL,
+  pays          VARCHAR(50),
+  date_creation TIMESTAMP NOT NULL DEFAULT now()
+);
+```
+
+### Manipuler les données (DML)
+Le **Data Manipulation Language** couvre l’insertion, la mise à jour et la suppression.
+```sql
+INSERT INTO client (nom, email, pays)
+VALUES ('Alice Dupont', 'alice@example.com', 'FR');
+
+UPDATE client
+SET pays = 'BE'
+WHERE email = 'alice@example.com';
+
+DELETE FROM client
+WHERE client_id = 999;
+```
+
+### Interroger l’information (DQL)
+Le **Data Query Language** s’articule autour de SELECT. On filtre, on joint, on agrège, on ordonne, on regroupe. Exemple : top des produits du mois courant.
+```sql
+SELECT p.produit_id, p.libelle, SUM(lc.qte) AS qte_vendue
+FROM ligne_commande lc
+JOIN commande c ON c.commande_id = lc.commande_id
+JOIN produit  p ON p.produit_id  = lc.produit_id
+WHERE date_trunc('month', c.date_cmd) = date_trunc('month', CURRENT_DATE)
+GROUP BY p.produit_id, p.libelle
+ORDER BY qte_vendue DESC
+LIMIT 5;
+```
+
+
+
