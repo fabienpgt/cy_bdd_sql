@@ -112,6 +112,22 @@ Ces tables peuvent être mises sous forme de schema
 
 ---
 
+## Exercice : du tableur aux tables relationnelles
+
+Un fichier Excel est fourni :  
+`dataset/prets_bibliotheque_tableur.xlsx`  
+
+Il contient toutes les informations d’une bibliothèque.  
+
+**Objectif :** transformer ce fichier « plat » en plusieurs tables relationnelles.  
+
+### Étapes attendues
+1. Identifier les entités principales  
+2. Créer une table pour chaque entité avec une **clé primaire (PK)**.  
+3. (Bonus) Déterminer les **clés étrangères (FK)** permettant de relier les tables.
+
+---
+
 ## Qu’est-ce qu’un SGBD ?
 
 Une base de données ne “tourne” pas seule. Il faut un moteur qui la crée, la maintienne, exécute les requêtes, gère la sécurité, l’optimisation, les logs et la concurrence. Ce moteur est le **Système de Gestion de Base de Données** (**SGBD**). Il sert d’interface entre les données et leurs utilisateurs (humains ou applications).
