@@ -8,40 +8,31 @@ L’objectif de ce cours est de découvrir et de comprendre les systèmes de ges
 ---------------------------
 ## Programme pédagogique
 
-- **Séance 1**  
-  Mardi 9 septembre, 10h30 - 12h30  
+- **Séance 1** - Mardi 9 septembre, 10h30 - 12h30  
   Introduction aux bases de données et aux SGBD  
 
-- **Séance 2**  
-  Mardi 16 septembre, 10h30 - 12h30  
+- **Séance 2** - Mardi 16 septembre, 10h30 - 12h30  
   Modélisation conceptuelle (MCD)  
 
-- **Séance 3**  
-  Mardi 23 septembre, 10h30 - 12h30  
+- **Séance 3** - Mardi 23 septembre, 10h30 - 12h30  
   Du MCD au Modèle Logique (MLD)  
 
-- **Séance 4**  
-  Mardi 30 septembre, 10h30 - 12h30  
+- **Séance 4** - Mardi 30 septembre, 10h30 - 12h30  
   Passage au SQL + Introduction à PostgreSQL et DBeaver  
 
-- **Séance 5**  
-  Mardi 14 octobre, 8h30 - 12h30  
+- **Séance 5** - Mardi 14 octobre, 8h30 - 12h30  
   SQL - Requête simple et Jointure  
 
-- **Séance 6**  
-  Mardi 21 octobre, 10h30 - 12h30  
+- **Séance 6** - Mardi 21 octobre, 10h30 - 12h30  
   SQL - Requêtes imbriquées  
 
-- **Séance 7**  
-  Mardi 4 novembre, 10h30 - 20h30  
+- **Séance 7** - Mardi 4 novembre, 10h30 - 20h30  
   SQL - Agrégation de données  
 
-- **Séance 8**  
-  Mardi 18 novembre, 10h30 - 12h30  
+- **Séance 8** - Mardi 18 novembre, 10h30 - 12h30  
   Révisions  
 
-- **Séance 9**  
-  Mardi 25 novembre, 10h30 - 12h30  
+- **Séance 9** - Mardi 25 novembre, 10h30 - 12h30  
   Examen final  
 
 ---------------------------
@@ -56,9 +47,8 @@ L’objectif de ce cours est de découvrir et de comprendre les systèmes de ges
 ---------------------------
 ## Outils
 
-Durant ce cours, nous utiliserons principalement :  
-- **PostgreSQL** (SGBDR open source)  
-- **DBeaver** (client de base de données multiplateforme)  
+- **PostgreSQL**
+- **DBeaver**
 
 ---------------------------
 ## Enseignant responsable
