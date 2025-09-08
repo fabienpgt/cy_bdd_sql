@@ -115,7 +115,8 @@ Ces tables peuvent être mises sous forme de schema
 ## Exercice : du tableur aux tables relationnelles
 
 Un fichier Excel est fourni :  
-`dataset/prets_bibliotheque_tableur.xlsx`  
+[prets_bibliotheque_tableur.xlsx](../dataset/prets_bibliotheque_tableur.xlsx)
+
 
 Il contient toutes les informations d’une bibliothèque.  
 
