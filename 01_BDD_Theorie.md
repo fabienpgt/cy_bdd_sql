@@ -8,7 +8,7 @@ Mais dès que les données deviennent nombreuses, partagées ou évolutives, les
 ![Exemple de tableur avec erreurs](figures/exemple_excel.png)
 
 
-#### Limites d’un tableur
+### Limites d’un tableur
 
 - **Redondance** : l’adresse client, le mode de paiement, etc. sont répétés à chaque ligne → sources d’erreurs.
 - **Difficulté de mise à jour** : si l’adresse de Dupont change, il faut corriger toutes les lignes.
@@ -49,19 +49,21 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 
 ### Exemple de tables relationnelles
 
-#### Table `Clients`
-| client_id (PK) | nom           | adresse                       |
-|----------------|---------------|-------------------------------|
-| 1              | Dupont Jean   | 12 rue de Paris, Lyon         |
-| 2              | Martin Sophie | 4 place Bellecour, Lyon       |
-| 3              | Nguyen Paul   | 85 av. Jean Jaurès, Marseille |
+| client_id (PK) | nom            | adresse                    |
+|----------------|----------------|----------------------------|
+| 1              | Dupont Jean    | 12 rue de Paris, Lyon      |
+| 2              | Martin Sophie  | 4 place Bellecour, Lyon    |
+| 3              | Nguyen Paul    | 85 av. Jean Jaurès, Marseille |
 
 **Attributs de la table `Clients` :**
-- `client_id` : identifiant unique du client (**clé primaire**).  
-- `nom` : nom complet du client.  
-- `adresse` : adresse postale du client.  
+- `client_id` : identifiant unique du client (**clé primaire**)  
+- `nom` : nom complet du client  
+- `adresse` : adresse postale du client  
+
+---
 
 #### Table `Produits`
+
 | produit_id (PK) | nom_produit | prix_unitaire |
 |-----------------|-------------|---------------|
 | 201             | Pomme       | 1,20          |
@@ -70,14 +72,20 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 | 204             | Pêche       | 2,90          |
 | 205             | Jus         | 3,80          |
 
+---
+
 #### Table `Commandes`
-| commande_id (PK) | client_id (FK) | date       | mode_paiement | statut         |
-|------------------|----------------|------------|---------------|----------------|
-| 101              | 1              | 2025-09-01 | CB            | Livré          |
-| 102              | 2              | 2025-09-01 | Virement      | En préparation |
-| 103              | 3              | 2025-09-02 | CB            | Livré          |
+
+| commande_id (PK) | client_id (FK) | date       | paiement  | statut         |
+|------------------|----------------|------------|-----------|----------------|
+| 101              | 1              | 2025-09-01 | CB        | Livré          |
+| 102              | 2              | 2025-09-01 | Virement  | En préparation |
+| 103              | 3              | 2025-09-02 | CB        | Livré          |
+
+---
 
 #### Table `LignesCommande`
+
 | ligne_id (PK) | commande_id (FK) | produit_id (FK) | quantite |
 |---------------|------------------|-----------------|----------|
 | 1001          | 101              | 201             | 10       |
