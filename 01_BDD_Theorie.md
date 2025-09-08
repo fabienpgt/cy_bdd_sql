@@ -58,11 +58,6 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 | 2              | Martin Sophie  | 4 place Bellecour, Lyon    |
 | 3              | Nguyen Paul    | 85 av. Jean Jaurès, Marseille |
 
-**Attributs de la table `Clients` :**
-- `client_id` : identifiant unique du client (**clé primaire**)  
-- `nom` : nom complet du client  
-- `adresse` : adresse postale du client  
-
 ---
 
 #### Table `Produits`
@@ -101,7 +96,9 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 
 ### Comment lire cet exemple ?
 
-- Dans la table **Clients**, chaque enregistrement est identifié par `client_id`.  
+- Dans la table **Clients**, chaque enregistrement est identifié par `client_id`. 
+- `client_id`, `nom`, `adresse` sont les **Attributs** de la table **Clients**
+- `client_id` est la **clé primaire** de la table **Clients**
 - La table **Produits** répertorie les articles disponibles avec leur prix de référence, identifiés par `produit_id`.  
 - La table **Commandes** relie une commande à un client grâce à la **clé étrangère** `client_id`.  
 - La table **LignesCommande** relie chaque ligne à une commande (`commande_id`) et à un produit (`produit_id`).
