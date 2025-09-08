@@ -1,4 +1,6 @@
-# Bienvenue dans le cours **Bases de données – SQL** !  
+# Introduction
+
+Bienvenue dans le cours **Bases de données – SQL** !  
 
 L’objectif de ce cours est de découvrir et de comprendre les systèmes de gestion de bases de données relationnelles (SGBDR). Nous allons aborder à la fois la **modélisation de données** (du modèle conceptuel au modèle logique) et la **pratique du langage SQL** à travers des exercices concrets.
 À l’issue de ce cours, vous serez capable de concevoir un modèle de données simple, de l’implémenter dans un SGBDR, puis de formuler et exécuter des requêtes SQL pour analyser et exploiter les données.
@@ -59,5 +61,5 @@ L’objectif de ce cours est de découvrir et de comprendre les systèmes de ges
 
 ---------------------------
 ## Contact
- 
+
 fabien.pageot@gmail.com

@@ -1,4 +1,4 @@
-# Introduction aux bases de données et aux SGBD
+# Concepts clés
 ## Les tableurs
 
 Beaucoup d’organisations commencent avec un tableur. C’est intuitif : on saisit des données, on fait des calculs, on trie, on filtre, on partage un fichier. Pour de petites tâches ou des analyses ponctuelles, c'est très efficace.
@@ -115,7 +115,7 @@ Ces tables peuvent être mises sous forme de schema
 ## Exercice : du tableur aux tables relationnelles
 
 Un fichier Excel est fourni :  
-[prets_bibliotheque_tableur.xlsx](../datasets/prets_bibliotheque_tableur.xlsx)
+[prets_bibliotheque_tableur.xlsx](datasets/prets_bibliotheque_tableur.xlsx)
 
 
 Il contient toutes les informations d’une bibliothèque.  
