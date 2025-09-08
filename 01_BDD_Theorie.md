@@ -5,23 +5,10 @@ Beaucoup d’organisations commencent avec un tableur. C’est intuitif : on sai
 
 Mais dès que les données deviennent nombreuses, partagées ou évolutives, les limites apparaissent vite.
 
-**Exemple**
-
-| Nom client     | Adresse client                  | N° commande | Date commande | Produit | Quantité | Prix unitaire (€) | Mode de paiement | Statut livraison |
-| -------------- | ------------------------------- | ----------- | ------------- | ------- | -------- | ----------------- | ---------------- | ---------------- |
-| Dupont Jean    | 12 rue de Paris, Lyon           | CMD001      | 2025-09-01    | Pomme   | 10       | 1,20              | CB               | Livré            |
-| Dupon J.       | 12 rue Paris, Lyon              | CMD001      | 2025-09-01    | Poire   | 5        | 1,50              | CB               | Livré            |
-| Martin Sophie  | 4 pl. Bellecour, Lyon           | CMD002      | 2025-09-01    | Banane  | 3        | 2,40              | Virement         | En préparation   |
-| Martine Sophie | 4 place Bellecour, Lion         | CMD002      | 2025-09-01    | Pomme   | 20       | 1,20              | Virement         | En préparation   |
-| Nguyen Paul    | 85 av Jean Jaures, Marseille    | CMD003      | 2025-09-02    | Poire   | 15       | 1,50              | CB               | Livré            |
-| Dupuis Clara   | 14 rue Victor Hugeaux, Bordeaux | CMD004      | 2025-09-02    | Pêche   | 4        | 2,90              | Espèces          | Annulé           |
-| Durand Louis   | 2 impasse des Lillas, Nantes    | CMD005      | 2025-09-03    | Jus     | 10       | 3,80              | CB               | Livré            |
-| Petit Anne     | 11 rue Centrale, Toulouse       | CMD006      | 2025-09-04    | Banane  | 2        | 2,40              | CB               | En préparation   |
-| Garcia Maria   | 30 rue Natioanle, Lille         | CMD007      | 2025-09-05    | Pomme   | 12       | 1,20              | CB               | Livré            |
-| Bernard Allain | 7 chemin Vert, Rénnes           | CMD008      | 2025-09-05    | Poire   | 5        | 1,50              | Espèces          | En préparation   |
+![Exemple de tableur avec erreurs](figures/exemple_excel.png)
 
 
-**Limites d’un tableur**
+#### Limites d’un tableur
 
 - **Redondance** : l’adresse client, le mode de paiement, etc. sont répétés à chaque ligne → sources d’erreurs.
 - **Difficulté de mise à jour** : si l’adresse de Dupont change, il faut corriger toutes les lignes.
@@ -33,6 +20,8 @@ Mais dès que les données deviennent nombreuses, partagées ou évolutives, les
 
 
 C’est précisément pour dépasser ces limites que l’on utilise des bases de données relationnelles et des Systèmes de Gestion de Bases de Données (SGBD).
+
+
 ---
 
 ## Qu’est-ce qu’une base de données ?
