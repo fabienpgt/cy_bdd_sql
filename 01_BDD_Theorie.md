@@ -36,16 +36,66 @@ Elle supporte l’accès **concurrent** de plusieurs utilisateurs, gère des **v
 
 ## Bases de données relationnelles (SQL)
 
-Les bases de données relationnelles sont parmi les plus utilisées. 
-Le modèle relationnel représente les données sous forme de **tables** (relations). 
+Les bases de données relationnelles sont parmi les plus utilisées aujourd’hui.  
 
-Chaque **ligne** (enregistrement) est une instance.
+Le **modèle relationnel** représente les données sous forme de **tables** (appelées aussi relations).  
+- Chaque **ligne** d’une table est un **enregistrement** (ou tuple), c’est-à-dire une instance concrète.  
+- Chaque **colonne** est un **attribut**, c’est-à-dire une propriété décrivant les enregistrements.  
+- Chaque table possède une **clé primaire (PK)**, qui identifie de façon unique ses lignes.  
+- Les **clés étrangères (FK)** permettent de créer des **relations** entre les tables.  
 
-Chaque **colonne** (attribut) est une propriété. 
+Ainsi, une base de données relationnelle n’est pas une seule grande table comme dans un tableur, mais un ensemble de tables liées entre elles.  
 
-Chaque table a une **clé primaire** qui identifie de façon unique ses lignes. 
 
-Les **clés étrangères** expriment les **relations** entre tables.
+### Exemple de tables relationnelles
+
+#### Table `Clients`
+| client_id (PK) | nom           | adresse                       |
+|----------------|---------------|-------------------------------|
+| 1              | Dupont Jean   | 12 rue de Paris, Lyon         |
+| 2              | Martin Sophie | 4 place Bellecour, Lyon       |
+| 3              | Nguyen Paul   | 85 av. Jean Jaurès, Marseille |
+
+**Attributs de la table `Clients` :**
+- `client_id` : identifiant unique du client (**clé primaire**).  
+- `nom` : nom complet du client.  
+- `adresse` : adresse postale du client.  
+
+#### Table `Produits`
+| produit_id (PK) | nom_produit | prix_unitaire |
+|-----------------|-------------|---------------|
+| 201             | Pomme       | 1,20          |
+| 202             | Poire       | 1,50          |
+| 203             | Banane      | 2,40          |
+| 204             | Pêche       | 2,90          |
+| 205             | Jus         | 3,80          |
+
+#### Table `Commandes`
+| commande_id (PK) | client_id (FK) | date       | mode_paiement | statut         |
+|------------------|----------------|------------|---------------|----------------|
+| 101              | 1              | 2025-09-01 | CB            | Livré          |
+| 102              | 2              | 2025-09-01 | Virement      | En préparation |
+| 103              | 3              | 2025-09-02 | CB            | Livré          |
+
+#### Table `LignesCommande`
+| ligne_id (PK) | commande_id (FK) | produit_id (FK) | quantite |
+|---------------|------------------|-----------------|----------|
+| 1001          | 101              | 201             | 10       |
+| 1002          | 101              | 202             | 5        |
+| 1003          | 102              | 203             | 3        |
+| 1004          | 102              | 201             | 20       |
+| 1005          | 103              | 202             | 15       |
+
+
+
+### Comment lire cet exemple ?
+
+- Dans la table **Clients**, chaque enregistrement est identifié par `client_id`.  
+- La table **Produits** répertorie les articles disponibles avec leur prix de référence, identifiés par `produit_id`.  
+- La table **Commandes** relie une commande à un client grâce à la **clé étrangère** `client_id`.  
+- La table **LignesCommande** relie chaque ligne à une commande (`commande_id`) et à un produit (`produit_id`).  
+
+
 
 ---
 
