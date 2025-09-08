@@ -114,11 +114,7 @@ Ces tables peuvent être mises sous forme de schema
 
 ## Exercice : du tableur aux tables relationnelles
 
-Un fichier Excel est fourni :  
-[prets_bibliotheque_tableur.xlsx](datasets/prets_bibliotheque_tableur.xlsx)
-
-
-Il contient toutes les informations d’une bibliothèque.  
+Ce fichier Excel [prets_bibliotheque_tableur.xlsx]({{ '/datasets/prets_bibliotheque_tableur.xlsx' | relative_url }}) contient toutes les informations d’une bibliothèque.  
 
 **Objectif :** transformer ce fichier « plat » en plusieurs tables relationnelles.  
 
