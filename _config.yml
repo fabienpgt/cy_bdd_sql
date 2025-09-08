@@ -1,3 +1,10 @@
-title: Mon site
-description: Mon site Jekyll sur GitHub Pages
+title: EC3 / Bases de données - SQL (2025)
 remote_theme: carlosperate/jekyll-theme-rtd
+
+site_author: Fabien Pageot
+
+prev_next_buttons_location: None
+prev_next_buttons_location: top
+prev_next_buttons_location: bottom
+prev_next_buttons_location: both
+search_enabled: true
