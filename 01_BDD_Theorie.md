@@ -133,44 +133,52 @@ Exemples : MySQL, PostgreSQL, SQL Server et Oracle pour le relationnel ; MongoDB
 
 
 ## Le Langage SQL
-Le SQL (Structured Query Language) est un langage déclaratif et standardisé qui permet de décrire la structure d’une base relationnelle, de manipuler les données, de les interroger, de gérer les transactions et de contrôler les accès. 
+Le SQL (Structured Query Language) est un langage déclaratif et standardisé.
+Il permet de :
+- décrire la structure d’une base relationnelle
+- manipuler les données
+- interroger les données
+- gérer les transactions
+- contrôler les accès
+
+
+On distingue trois grandes familles de commandes SQL.
+
 
 ### Définir la structure (DDL)
 Le **Data Definition Language** sert à créer/faire évoluer tables, contraintes, index, vues et schémas.
 
 ```sql
-CREATE TABLE client (
-  client_id     SERIAL PRIMARY KEY,
-  nom           VARCHAR(100) NOT NULL,
-  email         VARCHAR(255) UNIQUE NOT NULL,
-  pays          VARCHAR(50),
-  date_creation TIMESTAMP NOT NULL DEFAULT now()
+CREATE TABLE Clients (
+  client_id  SERIAL PRIMARY KEY,
+  nom        VARCHAR(100) NOT NULL,
+  adresse    VARCHAR(255) NOT NULL
 );
 ```
 
 ### Manipuler les données (DML)
 Le **Data Manipulation Language** couvre l’insertion, la mise à jour et la suppression.
 ```sql
-INSERT INTO client (nom, email, pays)
-VALUES ('Alice Dupont', 'alice@example.com', 'FR');
+INSERT INTO Clients (nom, adresse)
+VALUES ('Alice Dupont', '10 rue Victor Hugo, Paris');
 
-UPDATE client
-SET pays = 'BE'
-WHERE email = 'alice@example.com';
+UPDATE Clients
+SET adresse = '15 rue de Lyon, Paris'
+WHERE client_id = 1;
 
-DELETE FROM client
+DELETE FROM Clients
 WHERE client_id = 999;
 ```
 
 ### Interroger l’information (DQL)
-Le **Data Query Language** s’articule autour de SELECT. On filtre, on joint, on agrège, on ordonne, on regroupe. Exemple : top des produits du mois courant.
+Le **Data Query Language** s’articule autour de SELECT. On filtre, on joint, on agrège, on ordonne, on regroupe.
 ```sql
-SELECT p.produit_id, p.libelle, SUM(lc.qte) AS qte_vendue
-FROM ligne_commande lc
-JOIN commande c ON c.commande_id = lc.commande_id
-JOIN produit  p ON p.produit_id  = lc.produit_id
-WHERE date_trunc('month', c.date_cmd) = date_trunc('month', CURRENT_DATE)
-GROUP BY p.produit_id, p.libelle
+SELECT p.produit_id, p.nom_produit, SUM(lc.quantite) AS qte_vendue
+FROM LignesCommande lc
+JOIN Commandes c ON c.commande_id = lc.commande_id
+JOIN Produits p  ON p.produit_id  = lc.produit_id
+WHERE date_trunc('month', c.date) = date_trunc('month', CURRENT_DATE)
+GROUP BY p.produit_id, p.nom_produit
 ORDER BY qte_vendue DESC
 LIMIT 5;
 ```
