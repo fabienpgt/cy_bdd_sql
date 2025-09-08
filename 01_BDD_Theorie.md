@@ -1,9 +1,52 @@
 # Introduction aux bases de données et aux SGBD
 ## Les tableurs
 
-Beaucoup d’organisations commencent avec un tableur parce qu’il est immédiat : on saisit, on calcule, on filtre, on partage. Mais au-delà des premiers usages, les limites apparaissent vite. Un tableur ne garantit pas l’unicité d’un client, ne protège pas les relations entre données (une commande ne « pointe » vers rien de garanti), ne gère pas bien les accès simultanés, et ne fournit pas de vraie gouvernance (contrôles, droits fins, sauvegardes éprouvées).
+Beaucoup d’organisations commencent avec un tableur parce qu’il est immédiat : on saisit, on calcule, on filtre, on partage. Mais au-delà des premiers usages, les limites apparaissent vite. 
 
-Dans un fichier “Commandes2025.xlsx”, chaque ligne pourrait représenter une ligne de commande avec le nom du client, son e-mail, l’adresse, le produit, la quantité, le prix et la date. Au fil du temps, on observe des variantes orthographiques d’un même client, des adresses qui divergent selon les lignes, des produits obsolètes encore utilisés, et des formules cassées par un déplacement de colonnes. Plus il y a de lignes, plus les opérations deviennent lentes et fragiles. Les versions circulent par e-mail et divergent sans qu’on le remarque.
+| Nom client    | Adresse client                | N° commande | Date commande | Produit           | Quantité | Prix unitaire (€) | Mode de paiement | Statut livraison | Commercial référent |
+| ------------- | ----------------------------- | ----------- | ------------- | ----------------- | -------- | ----------------- | ---------------- | ---------------- | ------------------- |
+| Dupont Jean   | 12 rue de Paris, Lyon         | CMD001      | 2025-09-01    | Pomme Golden      | 10       | 1,20              | CB               | Livré            | Alice Martin        |
+| Dupont Jean   | 12 rue de Paris, Lyon         | CMD001      | 2025-09-01    | Poire Conférence  | 5        | 1,50              | CB               | Livré            | Alice Martin        |
+| Dupont Jean   | 12 rue de Paris, Lyon         | CMD001      | 2025-09-01    | Jus de pomme (1L) | 2        | 3,80              | CB               | Livré            | Alice Martin        |
+| Martin Sophie | 4 place Bellecour, Lyon       | CMD002      | 2025-09-01    | Poire Conférence  | 20       | 1,50              | Virement         | En préparation   | Alice Martin        |
+| Martin Sophie | 4 place Bellecour, Lyon       | CMD002      | 2025-09-01    | Banane (kg)       | 3        | 2,40              | Virement         | En préparation   | Alice Martin        |
+| Nguyen Paul   | 85 av. Jean Jaurès, Marseille | CMD003      | 2025-09-02    | Pomme Golden      | 15       | 1,20              | CB               | Livré            | Karim Bensalem      |
+| Dupuis Clara  | 14 rue Victor Hugo, Bordeaux  | CMD004      | 2025-09-02    | Pêche (kg)        | 4        | 2,90              | Espèces          | Annulé           | Karim Bensalem      |
+| Dupuis Clara  | 14 rue Victor Hugo, Bordeaux  | CMD005      | 2025-09-03    | Pêche (kg)        | 2        | 2,90              | Espèces          | Livré            | Karim Bensalem      |
+| Durand Louis  | 2 impasse des Lilas, Nantes   | CMD006      | 2025-09-04    | Jus de pomme (1L) | 10       | 3,80              | CB               | Livré            | Alice Martin        |
+| Durand Louis  | 2 impasse des Lilas, Nantes   | CMD006      | 2025-09-04    | Pomme Golden      | 5        | 1,20              | CB               | Livré            | Alice Martin        |
+| Petit Anne    | 11 rue Centrale, Toulouse     | CMD007      | 2025-09-04    | Poire Conférence  | 10       | 1,50              | CB               | En préparation   | Karim Bensalem      |
+| Petit Anne    | 11 rue Centrale, Toulouse     | CMD007      | 2025-09-04    | Banane (kg)       | 2        | 2,40              | CB               | En préparation   | Karim Bensalem      |
+| Petit Anne    | 11 rue Centrale, Toulouse     | CMD008      | 2025-09-05    | Poire Conférence  | 8        | 1,50              | CB               | Livré            | Karim Bensalem      |
+| Garcia Maria  | 30 rue Nationale, Lille       | CMD009      | 2025-09-05    | Pomme Golden      | 12       | 1,20              | CB               | Livré            | Alice Martin        |
+| Garcia Maria  | 30 rue Nationale, Lille       | CMD009      | 2025-09-05    | Jus de pomme (1L) | 6        | 3,80              | CB               | Livré            | Alice Martin        |
+| Bernard Alain | 7 chemin Vert, Rennes         | CMD010      | 2025-09-05    | Pêche (kg)        | 5        | 2,90              | Espèces          | En préparation   | Karim Bensalem      |
+| Bernard Alain | 7 chemin Vert, Rennes         | CMD010      | 2025-09-05    | Poire Conférence  | 5        | 1,50              | Espèces          | En préparation   | Karim Bensalem      |
+| Laurent Julie | 50 av. République, Lyon       | CMD011      | 2025-09-06    | Banane (kg)       | 1        | 2,40              | Virement         | Livré            | Alice Martin        |
+| Laurent Julie | 50 av. République, Lyon       | CMD011      | 2025-09-06    | Pomme Golden      | 3        | 1,20              | Virement         | Livré            | Alice Martin        |
+| Laurent Julie | 50 av. République, Lyon       | CMD012      | 2025-09-07    | Jus de pomme (1L) | 12       | 3,80              | Virement         | En préparation   | Alice Martin        |
+
+
+Redondance : l’adresse client, le nom du commercial, le mode de paiement sont répétés pour chaque ligne → source d’erreur.
+
+Difficulté de mise à jour : si le client change d’adresse, il faut modifier toutes les lignes correspondantes.
+
+Incohérences possibles : un même client peut avoir une commande notée "Annulé" et une autre "Livré" → pas de gestion de contrainte d’intégrité.
+
+Produits mélangés dans la même table : pas de séparation entre "commandes" et "lignes de commande".
+
+Pas de clés primaires/étrangères : impossible de relier proprement les entités clients, commandes, produits.
+
+👉 Dans une base relationnelle, on aurait au moins 3 tables normalisées :
+
+- Clients(id, nom, adresse, commercial_id)
+- Commandes(id, client_id, date, paiement, statut)
+- LignesCommande(id, commande_id, produit_id, quantite, prix)
+
+
+- ne gère pas bien les accès simultanés
+- ne fournit pas de vraie gouvernance (contrôles, droits fins, sauvegardes éprouvées).
+
 
 Quelques vérités utiles à retenir :
 - Excel est pertinent pour **explorer rapidement** et **présenter** des résultats.
