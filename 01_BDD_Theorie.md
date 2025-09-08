@@ -1,60 +1,38 @@
 # Introduction aux bases de données et aux SGBD
 ## Les tableurs
 
-Beaucoup d’organisations commencent avec un tableur parce qu’il est immédiat : on saisit, on calcule, on filtre, on partage. Mais au-delà des premiers usages, les limites apparaissent vite. 
+Beaucoup d’organisations commencent avec un tableur. C’est intuitif : on saisit des données, on fait des calculs, on trie, on filtre, on partage un fichier. Pour de petites tâches ou des analyses ponctuelles, c'est très efficace.
 
-| Nom client    | Adresse client                | N° commande | Date commande | Produit           | Quantité | Prix unitaire (€) | Mode de paiement | Statut livraison | Commercial référent |
-| ------------- | ----------------------------- | ----------- | ------------- | ----------------- | -------- | ----------------- | ---------------- | ---------------- | ------------------- |
-| Dupont Jean   | 12 rue de Paris, Lyon         | CMD001      | 2025-09-01    | Pomme Golden      | 10       | 1,20              | CB               | Livré            | Alice Martin        |
-| Dupont Jean   | 12 rue de Paris, Lyon         | CMD001      | 2025-09-01    | Poire Conférence  | 5        | 1,50              | CB               | Livré            | Alice Martin        |
-| Dupont Jean   | 12 rue de Paris, Lyon         | CMD001      | 2025-09-01    | Jus de pomme (1L) | 2        | 3,80              | CB               | Livré            | Alice Martin        |
-| Martin Sophie | 4 place Bellecour, Lyon       | CMD002      | 2025-09-01    | Poire Conférence  | 20       | 1,50              | Virement         | En préparation   | Alice Martin        |
-| Martin Sophie | 4 place Bellecour, Lyon       | CMD002      | 2025-09-01    | Banane (kg)       | 3        | 2,40              | Virement         | En préparation   | Alice Martin        |
-| Nguyen Paul   | 85 av. Jean Jaurès, Marseille | CMD003      | 2025-09-02    | Pomme Golden      | 15       | 1,20              | CB               | Livré            | Karim Bensalem      |
-| Dupuis Clara  | 14 rue Victor Hugo, Bordeaux  | CMD004      | 2025-09-02    | Pêche (kg)        | 4        | 2,90              | Espèces          | Annulé           | Karim Bensalem      |
-| Dupuis Clara  | 14 rue Victor Hugo, Bordeaux  | CMD005      | 2025-09-03    | Pêche (kg)        | 2        | 2,90              | Espèces          | Livré            | Karim Bensalem      |
-| Durand Louis  | 2 impasse des Lilas, Nantes   | CMD006      | 2025-09-04    | Jus de pomme (1L) | 10       | 3,80              | CB               | Livré            | Alice Martin        |
-| Durand Louis  | 2 impasse des Lilas, Nantes   | CMD006      | 2025-09-04    | Pomme Golden      | 5        | 1,20              | CB               | Livré            | Alice Martin        |
-| Petit Anne    | 11 rue Centrale, Toulouse     | CMD007      | 2025-09-04    | Poire Conférence  | 10       | 1,50              | CB               | En préparation   | Karim Bensalem      |
-| Petit Anne    | 11 rue Centrale, Toulouse     | CMD007      | 2025-09-04    | Banane (kg)       | 2        | 2,40              | CB               | En préparation   | Karim Bensalem      |
-| Petit Anne    | 11 rue Centrale, Toulouse     | CMD008      | 2025-09-05    | Poire Conférence  | 8        | 1,50              | CB               | Livré            | Karim Bensalem      |
-| Garcia Maria  | 30 rue Nationale, Lille       | CMD009      | 2025-09-05    | Pomme Golden      | 12       | 1,20              | CB               | Livré            | Alice Martin        |
-| Garcia Maria  | 30 rue Nationale, Lille       | CMD009      | 2025-09-05    | Jus de pomme (1L) | 6        | 3,80              | CB               | Livré            | Alice Martin        |
-| Bernard Alain | 7 chemin Vert, Rennes         | CMD010      | 2025-09-05    | Pêche (kg)        | 5        | 2,90              | Espèces          | En préparation   | Karim Bensalem      |
-| Bernard Alain | 7 chemin Vert, Rennes         | CMD010      | 2025-09-05    | Poire Conférence  | 5        | 1,50              | Espèces          | En préparation   | Karim Bensalem      |
-| Laurent Julie | 50 av. République, Lyon       | CMD011      | 2025-09-06    | Banane (kg)       | 1        | 2,40              | Virement         | Livré            | Alice Martin        |
-| Laurent Julie | 50 av. République, Lyon       | CMD011      | 2025-09-06    | Pomme Golden      | 3        | 1,20              | Virement         | Livré            | Alice Martin        |
-| Laurent Julie | 50 av. République, Lyon       | CMD012      | 2025-09-07    | Jus de pomme (1L) | 12       | 3,80              | Virement         | En préparation   | Alice Martin        |
+Mais dès que les données deviennent nombreuses, partagées ou évolutives, les limites apparaissent vite.
+
+**Exemple**
+
+| Nom client     | Adresse client                  | N° commande | Date commande | Produit | Quantité | Prix unitaire (€) | Mode de paiement | Statut livraison |
+| -------------- | ------------------------------- | ----------- | ------------- | ------- | -------- | ----------------- | ---------------- | ---------------- |
+| Dupont Jean    | 12 rue de Paris, Lyon           | CMD001      | 2025-09-01    | Pomme   | 10       | 1,20              | CB               | Livré            |
+| Dupon J.       | 12 rue Paris, Lyon              | CMD001      | 2025-09-01    | Poire   | 5        | 1,50              | CB               | Livré            |
+| Martin Sophie  | 4 pl. Bellecour, Lyon           | CMD002      | 2025-09-01    | Banane  | 3        | 2,40              | Virement         | En préparation   |
+| Martine Sophie | 4 place Bellecour, Lion         | CMD002      | 2025-09-01    | Pomme   | 20       | 1,20              | Virement         | En préparation   |
+| Nguyen Paul    | 85 av Jean Jaures, Marseille    | CMD003      | 2025-09-02    | Poire   | 15       | 1,50              | CB               | Livré            |
+| Dupuis Clara   | 14 rue Victor Hugeaux, Bordeaux | CMD004      | 2025-09-02    | Pêche   | 4        | 2,90              | Espèces          | Annulé           |
+| Durand Louis   | 2 impasse des Lillas, Nantes    | CMD005      | 2025-09-03    | Jus     | 10       | 3,80              | CB               | Livré            |
+| Petit Anne     | 11 rue Centrale, Toulouse       | CMD006      | 2025-09-04    | Banane  | 2        | 2,40              | CB               | En préparation   |
+| Garcia Maria   | 30 rue Natioanle, Lille         | CMD007      | 2025-09-05    | Pomme   | 12       | 1,20              | CB               | Livré            |
+| Bernard Allain | 7 chemin Vert, Rénnes           | CMD008      | 2025-09-05    | Poire   | 5        | 1,50              | Espèces          | En préparation   |
 
 
-Redondance : l’adresse client, le nom du commercial, le mode de paiement sont répétés pour chaque ligne → source d’erreur.
+**Limites d’un tableur**
 
-Difficulté de mise à jour : si le client change d’adresse, il faut modifier toutes les lignes correspondantes.
-
-Incohérences possibles : un même client peut avoir une commande notée "Annulé" et une autre "Livré" → pas de gestion de contrainte d’intégrité.
-
-Produits mélangés dans la même table : pas de séparation entre "commandes" et "lignes de commande".
-
-Pas de clés primaires/étrangères : impossible de relier proprement les entités clients, commandes, produits.
-
-👉 Dans une base relationnelle, on aurait au moins 3 tables normalisées :
-
-- Clients(id, nom, adresse, commercial_id)
-- Commandes(id, client_id, date, paiement, statut)
-- LignesCommande(id, commande_id, produit_id, quantite, prix)
+- **Redondance** : l’adresse client, le mode de paiement, etc. sont répétés à chaque ligne → sources d’erreurs.
+- **Difficulté de mise à jour** : si l’adresse de Dupont change, il faut corriger toutes les lignes.
+- **Incohérences** : le même client peut apparaître avec des noms différents (Dupont Jean / Dupon J.), des adresses mal orthographiées (Lyon / Lion), ou des données contradictoires.
+- **Pas de structure claire** : commandes et produits sont mélangés dans la même table.
+- **Pas de clés primaires/étrangères** : impossible d’assurer l’unicité et la cohérence des relations entre clients, commandes et produits.
+- **Pas de gestion fine des accès** : si deux personnes modifient le fichier en même temps, les versions peuvent entrer en conflit.
+- **Pas de vraie gouvernance** : peu de contrôle sur les droits, les validations, les sauvegardes.
 
 
-- ne gère pas bien les accès simultanés
-- ne fournit pas de vraie gouvernance (contrôles, droits fins, sauvegardes éprouvées).
-
-
-Quelques vérités utiles à retenir :
-- Excel est pertinent pour **explorer rapidement** et **présenter** des résultats.
-- Excel devient risqué dès qu’il sert de **source de vérité partagée**, avec des **données liées** et **évolutives**.
-- Les incohérences, la duplication et l’absence de contrôles finissent par coûter cher.
-
-C’est précisément pour répondre à ces limites qu’existent les bases de données et les SGBD.
-
+C’est précisément pour dépasser ces limites que l’on utilise des bases de données relationnelles et des Systèmes de Gestion de Bases de Données (SGBD).
 ---
 
 ## Qu’est-ce qu’une base de données ?
