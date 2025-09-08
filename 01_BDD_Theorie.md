@@ -46,8 +46,11 @@ Le **modèle relationnel** représente les données sous forme de **tables** (ap
 
 Ainsi, une base de données relationnelle n’est pas une seule grande table comme dans un tableur, mais un ensemble de tables liées entre elles.  
 
+---
 
 ### Exemple de tables relationnelles
+
+#### Table `Clients`
 
 | client_id (PK) | nom            | adresse                    |
 |----------------|----------------|----------------------------|
@@ -94,15 +97,14 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 | 1004          | 102              | 201             | 20       |
 | 1005          | 103              | 202             | 15       |
 
-
+---
 
 ### Comment lire cet exemple ?
 
 - Dans la table **Clients**, chaque enregistrement est identifié par `client_id`.  
 - La table **Produits** répertorie les articles disponibles avec leur prix de référence, identifiés par `produit_id`.  
 - La table **Commandes** relie une commande à un client grâce à la **clé étrangère** `client_id`.  
-- La table **LignesCommande** relie chaque ligne à une commande (`commande_id`) et à un produit (`produit_id`).  
-
+- La table **LignesCommande** relie chaque ligne à une commande (`commande_id`) et à un produit (`produit_id`).
 
 
 ---
@@ -123,9 +125,6 @@ Exemples : MySQL, PostgreSQL, SQL Server et Oracle pour le relationnel ; MongoDB
 - Un **SGBDR** organise les entités en **tables** reliées par des **clés**, impose des **contraintes** d’intégrité et expose **SQL**.
 - Un **SGBD non relationnel** peut stocker des **documents** JSON (flexibles), des **paires clé-valeur** (caches ultra-rapides), des **graphes** (relations profondes), etc. Cela offre de la souplesse, mais confie souvent à l’application la responsabilité de la cohérence.
 
-Conclusion :
-- Tous les **SGBDR** sont des **SGBD**, mais tous les **SGBD** ne sont pas relationnels.
-- Pour une application métier transactionnelle (ventes, facturation, RH, inventaire, réservations), le **relationnel** reste le **choix par défaut**.
 
 ---
 
