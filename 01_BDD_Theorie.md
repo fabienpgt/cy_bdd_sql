@@ -26,16 +26,26 @@ C’est précisément pour dépasser ces limites que l’on utilise des bases de
 
 ## Qu’est-ce qu’une base de données ?
 
-Une base de données est une **organisation logique et durable** d’informations. Son objectif est de permettre de **stocker**, **retrouver**, **mettre à jour**, **partager** et **protéger** ces informations à mesure que l’activité grandit. Contrairement à un simple fichier, une base de données impose un **schéma** (quelles colonnes, quels types, quelles règles) et fait respecter des **contraintes** (unicité, non-nullité, domaines de valeurs). Elle supporte l’accès **concurrent** de plusieurs utilisateurs, gère des **volumes croissants** et garantit la **persistance**.
+Une base de données est une **organisation logique et durable** d’informations. 
+Son objectif est de permettre de **stocker**, **retrouver**, **mettre à jour**, **partager** et **protéger** ces informations à mesure que l’activité grandit. 
+Contrairement à un simple fichier, une base de données impose un **schéma** (quelles colonnes, quels types de données, quelles règles) et fait respecter des **contraintes** (unicité, non-nullité, domaines de valeurs). 
+Elle supporte l’accès **concurrent** de plusieurs utilisateurs, gère des **volumes croissants** et garantit la **persistance**.
 
-Exemple concret : sur un site e-commerce, l’inscription d’un client enregistre son nom, son e-mail et un mot de passe. Une commande consigne les produits, les quantités, les prix et la date. Lorsqu’il revient, son **historique** est intact. Une base de données relie et sécurise ces informations : une commande ne peut exister sans client valide ; une quantité doit être strictement positive ; un produit supprimé ne peut pas être référencé par une nouvelle ligne.
 
-Repères utiles :
-- **Organisation structurée** : colonnes typées plutôt que cellules libres.
-- **Règles explicites** : contraintes d’intégrité au plus près des données.
-- **Accès concurrent** : lectures/écritures simultanées sans corruption.
-- **Scalabilité** : montée en charge sans casser la structure.
-- **Durabilité** : les changements validés survivent aux pannes.
+---
+
+## Bases de données relationnelles (SQL)
+
+Les bases de données relationnelles sont parmi les plus utilisées. 
+Le modèle relationnel représente les données sous forme de **tables** (relations). 
+
+Chaque **ligne** (enregistrement) est une instance.
+
+Chaque **colonne** (attribut) est une propriété. 
+
+Chaque table a une **clé primaire** qui identifie de façon unique ses lignes. 
+
+Les **clés étrangères** expriment les **relations** entre tables.
 
 ---
 
@@ -43,14 +53,6 @@ Repères utiles :
 
 Une base de données ne “tourne” pas seule. Il faut un moteur qui la crée, la maintienne, exécute les requêtes, gère la sécurité, l’optimisation, les journaux et la concurrence. Ce moteur est le **Système de Gestion de Base de Données** (**SGBD**). Il sert d’interface entre les données et leurs utilisateurs (humains ou applications).
 
-Un SGBD sérieux propose :
-- **Gestion du stockage** : fichiers, mémoire, caches, journaux de transactions.
-- **Sécurité** : authentification, rôles, droits granulaires, chiffrement en transit/au repos.
-- **Transactions (ACID)** : « tout ou rien », cohérence et durabilité garanties.
-- **Langage d’accès** : en relationnel, **SQL** est le standard.
-- **Sauvegardes et restauration** : planifiées et testées.
-- **Optimisation** : index, statistiques, plans d’exécution, parallélisme.
-- **Disponibilité** : réplication, bascule (failover), supervision.
 
 Exemples : MySQL, PostgreSQL, SQL Server et Oracle pour le relationnel ; MongoDB (documents), Redis (clé-valeur), Neo4j (graphes) côté NoSQL.
 
@@ -69,19 +71,9 @@ Conclusion :
 
 ---
 
-## Le modèle relationnel
-
-Le modèle relationnel représente les données sous forme de **tables** (relations). 
-
-Chaque **ligne** (enregistrement) est une instance.
-
-Chaque **colonne** (attribut) est une propriété. 
-Chaque table a une **clé primaire** qui identifie de façon unique ses lignes. 
-Les **clés étrangères** expriment les **relations** entre tables.
-
 
 ## Le Langage SQL
-Le SQL (Structured Query Language) est un langage déclaratif et standardisé qui permet de décrire la structure d’une base relationnelle, de manipuler les données, de les interroger, de gérer les transactions et de contrôler les accès. On distingue cinq volets complémentaires.
+Le SQL (Structured Query Language) est un langage déclaratif et standardisé qui permet de décrire la structure d’une base relationnelle, de manipuler les données, de les interroger, de gérer les transactions et de contrôler les accès. 
 
 ### Définir la structure (DDL)
 Le **Data Definition Language** sert à créer/faire évoluer tables, contraintes, index, vues et schémas.
