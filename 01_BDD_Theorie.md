@@ -103,6 +103,12 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 - La table **Commandes** relie une commande à un client grâce à la **clé étrangère** `client_id`.  
 - La table **LignesCommande** relie chaque ligne à une commande (`commande_id`) et à un produit (`produit_id`).
 
+---
+
+Ces tables peuvent être mises sous forme de schema
+
+![Exemple de schéma relationnel](figures/schema_exemple.png)
+
 
 ---
 
