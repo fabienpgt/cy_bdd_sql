@@ -96,6 +96,8 @@ Ainsi, une base de données relationnelle n’est pas une seule grande table com
 
 ### Comment lire cet exemple ?
 
+![Element de tables d'une bdd relationnelle](figures\bdd_relationnelle_elements.png)
+
 - Dans la table **Clients**, chaque enregistrement est identifié par `client_id`. 
 - `client_id`, `nom`, `adresse` sont les **Attributs** de la table **Clients**
 - `client_id` est la **clé primaire** de la table **Clients**
