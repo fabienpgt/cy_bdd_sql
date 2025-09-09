@@ -34,7 +34,7 @@ Elle supporte l’accès **concurrent** de plusieurs utilisateurs, gère des **v
 
 ---
 
-## Bases de données relationnelles (SQL)
+## Bases de données relationnelles
 
 Les bases de données relationnelles sont parmi les plus utilisées aujourd’hui.  
 
