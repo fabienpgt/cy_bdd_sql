@@ -143,6 +143,62 @@ Exemples : MySQL, PostgreSQL, SQL Server et Oracle pour le relationnel ; MongoDB
 - Un **SGBDR** organise les entités en **tables** reliées par des **clés**, impose des **contraintes** d’intégrité et expose **SQL**.
 - Un **SGBD non relationnel** peut stocker des **documents** JSON (flexibles), des **paires clé-valeur** (caches ultra-rapides), des **graphes** (relations profondes), etc. Cela offre de la souplesse, mais confie souvent à l’application la responsabilité de la cohérence.
 
+## Qu’est-ce que l’approche ACID ?
+
+ACID est un acronyme qui désigne quatre propriétés fondamentales d’une transaction :
+
+- **Atomicité**
+- **Cohérence (Consistency)**
+- **Isolation**
+- **Durabilité (Durability)**
+
+Une **transaction** correspond à une opération sur la base de données : ajout d’un enregistrement, mise à jour, suppression, etc.  
+L’approche ACID garantit que chaque transaction sera exécutée correctement, ou annulée sans laisser la base dans un état incohérent.
+
+---
+
+### Atomicité
+
+L’atomicité signifie que **toute transaction doit s’exécuter entièrement ou pas du tout**.  
+Si une panne interrompt l’opération, la base de données revient automatiquement à son état initial.  
+Cela évite les situations où une transaction partielle corromprait les données.
+
+---
+
+### Cohérence
+
+La cohérence garantit que **les contraintes d’intégrité définies dans la base ne sont jamais violées**.  
+Par exemple :
+
+- Un solde de compte bancaire ne peut pas devenir négatif si la règle l’interdit.  
+- Une clé étrangère ne peut pas pointer vers un enregistrement inexistant.  
+
+Si une transaction enfreint ces règles, elle est annulée.
+
+---
+
+### Isolation
+
+L’isolation assure que les transactions **n’interfèrent pas entre elles**.  
+Elles sont exécutées comme si elles étaient séquentielles, même si elles sont en réalité parallèles.  
+
+---
+
+### Durabilité
+
+La durabilité garantit que **toute modification validée reste enregistrée**, même après une panne système.  
+Les bases utilisent pour cela des **logs de transactions** qui permettent de restaurer l’état exact après un redémarrage.  
+
+---
+
+### Pourquoi ACID est essentiel ?
+
+- Préserve l’**intégrité des données**  
+- Assure la **fiabilité des applications** reposant sur la BDD  
+- Évite des erreurs coûteuses 
+
+Sans ACID, une base peut rapidement accumuler des données incohérentes ou corrompues, mettant en péril la qualité des décisions prises à partir de ces informations.
+
 
 ---
 
