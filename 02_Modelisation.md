@@ -44,6 +44,8 @@ Dans notre festival, on identifie les entités suivantes :
 - **Festivaliers** : spectateurs assistant au festival. Attributs : nom, prénom, adresse e-mail, numéro de pass.  
 - **Personnel** : personnes travaillant pour l’organisation (techniciens, bénévoles, agents de sécurité). Attributs : nom, fonction.  
 
+![Exemple Table](figures/mcd_tables_only.png)
+
 Chaque entité doit être identifiée de manière unique grâce à un **identifiant**. Dans la plupart des cas, on utilise un entier auto-incrémenté, qui sera la clé primaire dans le modèle relationnel.
 
 ---
@@ -58,6 +60,8 @@ Dans notre festival, on peut identifier les associations suivantes :
 - **Assister à (Festivaliers ↔ Concerts)** : un festivalier assiste à un concert. Attributs possibles : type de billet, date d’achat.  
 - **Travailler sur (Personnel ↔ Concerts)** : un membre du personnel travaille sur un concert. Attributs possibles : rôle, horaire de prise de poste.  
 
+![Exemple Associations](figures\mcd_associations_only.png)
+
 ---
 
 ## Les cardinalités
@@ -69,6 +73,7 @@ Dans le festival :
 - **Assister à** : Un festivalier peut assister à un ou plusieurs concerts (0,N) et un concert peut accueillir zéro, un ou plusieurs festivaliers (0,N).
 - **Travailler sur** : Un membre du personnel peut travailler sur zéro, un ou plusieurs concerts (0,N) et un concert mobilise au moins une personne, mais souvent plusieurs (1,N).
  
+![Exemple Cardinalités](figures\mcd_cardinalités.png)
 
 Les cardinalités traduisent directement les règles métier. Elles doivent être discutées et validées avec les utilisateurs du système.  
 
@@ -84,6 +89,8 @@ Exemple dans le festival : l’entité **Personnel** reliée à elle-même par l
 
 Cela permet de représenter une hiérarchie interne : un chef de sécurité supervise plusieurs agents, mais chaque agent n’a qu’un seul supérieur direct.  
 
+![Exemple asso reflexive](figures\mcd_asso_reflexive_personnels.png)
+
 ---
 
 ### Association plurielle
@@ -94,7 +101,7 @@ Exemple classique : une **agence immobilière**. Les entités **Personnes** et *
 - **Résider principalement** : une personne peut avoir au maximum un logement principal, tandis qu’un logement peut être la résidence principale de 0, 1 ou plusieurs personnes.  
 - **Résider secondairement** : une personne peut disposer de plusieurs résidences secondaires, et un logement peut être utilisé comme résidence secondaire par plusieurs personnes.  
 
-Cet exemple illustre que les mêmes entités peuvent être reliées par plusieurs rôles différents.  
+![Exemple asso plurielle](figures\mcd_asso_plurielles.png)
 
 ---
 
