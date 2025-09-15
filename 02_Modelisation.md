@@ -1,4 +1,4 @@
-# Cours : De la modélisation à la conception d’une base de données
+# De la modélisation à la conception d’une base de données
 
 ## Introduction
 Créer une base de données ne se limite pas à « stocker des informations ». C’est un travail de conception, comparable à la construction d’une maison : avant de poser les briques, il faut dessiner des plans. Ces plans assurent que la maison sera solide, adaptée aux besoins, et évolutive.  
