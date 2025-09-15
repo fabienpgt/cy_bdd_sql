@@ -64,7 +64,7 @@ Dans notre festival, on peut identifier les associations suivantes :
 
 ---
 
-## Les cardinalités
+### Les cardinalités
 Les **cardinalités** précisent combien de fois une occurrence d’une entité peut participer à une association. Elles se notent sous la forme (min, max).  
 
 Dans le festival :  
@@ -79,9 +79,9 @@ Les cardinalités traduisent directement les règles métier. Elles doivent êtr
 
 ---
 
-## Cas particuliers
+### Cas particuliers
 
-### Association réflexive
+#### Association réflexive
 Une **association réflexive** relie une entité à elle-même : les occurrences de la même entité entretiennent entre elles un lien spécifique.  
 Exemple dans le festival : l’entité **Personnel** reliée à elle-même par l’association **Superviser**.  
 - Un membre du personnel peut superviser 0, 1 ou plusieurs autres membres (0,N).  
@@ -93,7 +93,7 @@ Cela permet de représenter une hiérarchie interne : un chef de sécurité supe
 
 ---
 
-### Association plurielle
+#### Association plurielle
 Les **associations plurielles** apparaissent lorsqu’une même paire d’entités est reliée par plusieurs associations distinctes, chacune traduisant un rôle différent.  
 
 Exemple classique : une **agence immobilière**. Les entités **Personnes** et **Logements** sont reliées par trois associations :  
@@ -105,13 +105,13 @@ Exemple classique : une **agence immobilière**. Les entités **Personnes** et *
 
 ---
 
-## Exercice – Salle de sport
+### Exercice – Salle de sport
 Voici les règles de gestion métier que vous avez actuellement en votre possession :
-- Une salle de sport propose plusieurs cours collectifs comme le yoga, le pilates, le crossfit ou encore des cours de self défense.  
+- Une salle de sport propose plusieurs **cours** collectifs comme le yoga, le pilates, le crossfit ou encore des cours de self défense.  
 - Chaque cours se déroule dans un **espace dédié** (salle de yoga, salle de musculation, espace extérieur, zone de tatami).  
 - Les cours sont encadrés par des **coach sportifs**. On souhaite mémoriser leur nom, prénom et leur date d’arrivée dans le club.  
 - Les **membres** assistent aux cours. Pour chaque membre, on enregistre : numéro d’adhésion, nom, prénom, adresse e-mail, date d’enregistrement et formule choisie (abonnement mensuel, annuel, cours individuels uniquement).  
 - Chaque cours est planifié sur un ou plusieurs **créneaux horaires** (date, heure de début, durée).  
--On aimerait pouvoir savoir qui a participé réellement à un créneau (présence effective), ce qui peut différer des inscriptions prévues.
+- On aimerait pouvoir savoir qui a participé réellement à un créneau (présence effective), ce qui peut différer des inscriptions prévues.
 
 Identifiez les **entités**, les **associations** ainsi que les **cardinalités** nécessaire à l'établissement du MCD et réalisez celui-ci.
