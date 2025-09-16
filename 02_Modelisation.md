@@ -81,8 +81,8 @@ Les **cardinalités** précisent combien de fois une occurrence d’une entité 
 
 Dans le festival :  
 - **Programmer** : Un concert est programmé sur une et une seule scène (cardinalité (1,1) côté Concerts) et une scène peut accueillir un ou plusieurs concerts (cardinalité (0,N) côté Scènes).
-- **Jouer** : Un artiste peut jouer dans un ou plusieurs concerts (0,N) et un concert accueille un ou plusieurs artistes (1,N)  
-- **Assister à** : Un festivalier peut assister à un ou plusieurs concerts (0,N) et un concert peut accueillir zéro, un ou plusieurs festivaliers (0,N).
+- **Jouer** : Un artiste peut jouer dans un ou plusieurs concerts (1,N) et un concert accueille un ou plusieurs artistes (1,N)  
+- **Assister à** : Un festivalier peut assister à un ou plusieurs concerts (1,N) et un concert peut accueillir zéro, un ou plusieurs festivaliers (0,N).
 - **Travailler sur** : Un membre du personnel peut travailler sur zéro, un ou plusieurs concerts (0,N) et un concert mobilise au moins une personne, mais souvent plusieurs (1,N).
  
 ![Exemple Cardinalités](figures\mcd_cardinalités.png)
