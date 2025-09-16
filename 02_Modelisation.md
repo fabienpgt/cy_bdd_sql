@@ -10,7 +10,7 @@ En France, une méthode a largement structuré cette démarche : la méthodologi
 - **Logique (MLD – modèle logique des données)** : traduction vers le modèle relationnel.  
 - **Physique (MPD – modèle physique des données)** : passage au SQL concret.  
 
-Nous allons suivre tout au long du cours un exemple fil rouge : un **festival de musique**.
+Nous allons suivre tout au long du cours un exemple fil rouge : un **Le Festival Jazz de la Villette**.
 
 ---
 
@@ -26,6 +26,18 @@ En tant que développeur ou concepteur, il est essentiel de savoir poser les bon
 - Quelles informations doivent être mémorisées ?  
 - Quels objets doivent être reliés entre eux ?  
 - Quelles contraintes particulières faut-il respecter ?  
+
+
+**Exemple du Festival**
+- Un **festivalier** peut assister à plusieurs **concerts**, et chaque **concert** peut accueillir plusieurs **festivaliers**.  
+- Un **concert** se déroule obligatoirement sur une seule **scène**, et chaque **scène** peut accueillir plusieurs **concerts**.  
+- Un **artiste** peut jouer dans plusieurs **concerts**, et chaque **concert** peut accueillir plusieurs **artistes**.  
+- Un **membre du personnel** peut travailler sur plusieurs **concerts**, et chaque **concert** mobilise plusieurs **personnels**.  
+- Chaque **concert** possède une **date** et une **heure de début** qui doivent être uniques pour ce **concert**.  
+- Un **festivalier** est identifié par son **nom**, **prénom** et **adresse e-mail**.  
+- Un **artiste** est identifié par son **nom**, son **style musical** et son **pays**.  
+- Un **membre du personnel** est identifié par son **nom**, **prénom** et **fonction**.  
+
 
 ---
 
@@ -106,7 +118,11 @@ Exemple classique : une **agence immobilière**. Les entités **Personnes** et *
 ---
 
 ### Exercice – Salle de sport
-Voici les règles de gestion métier que vous avez actuellement en votre possession :
+
+Les propriétaires d’une salle de sport souhaitent mieux gérer leurs activités quotidiennes : organisation des cours, gestion des coachs, suivi des membres et de leurs présences.
+Ils font donc appel à vous, en tant que consultants en modélisation de bases de données, pour concevoir le modèle conceptuel de données (MCD) de leur futur système d’information.
+
+**Règles de gestion métier fournies**
 - Une salle de sport propose plusieurs **cours** collectifs comme le yoga, le pilates, le crossfit ou encore des cours de self défense.  
 - Chaque cours se déroule dans un **espace dédié** (salle de yoga, salle de musculation, espace extérieur, zone de tatami).  
 - Les cours sont encadrés par des **coach sportifs**. On souhaite mémoriser leur nom, prénom et leur date d’arrivée dans le club.  
@@ -114,4 +130,8 @@ Voici les règles de gestion métier que vous avez actuellement en votre possess
 - Chaque cours est planifié sur un ou plusieurs **créneaux horaires** (date, heure de début, durée).  
 - On aimerait pouvoir savoir qui a participé réellement à un créneau (présence effective), ce qui peut différer des inscriptions prévues.
 
-Identifiez les **entités**, les **associations** ainsi que les **cardinalités** nécessaire à l'établissement du MCD et réalisez celui-ci.
+**Consignes de l'exercices**
+- Identifiez les **entités** principales, leurs attributs et leurs identifiants
+- Identifiez les **associations** nécessaires à la gestion de ce système
+- Identifiez les **cardinalités** pour chaque association
+- Réalisez le **MCD** complet
