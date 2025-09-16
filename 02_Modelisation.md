@@ -123,12 +123,22 @@ Les propriétaires d’une salle de sport souhaitent mieux gérer leurs activit�
 Ils font donc appel à vous, en tant que consultants en modélisation de bases de données, pour concevoir le modèle conceptuel de données (MCD) de leur futur système d’information.
 
 **Règles de gestion métier fournies**
-- Une salle de sport propose plusieurs **cours** collectifs comme le yoga, le pilates, le crossfit ou encore des cours de self défense.  
-- Chaque cours se déroule dans un **espace dédié** (salle de yoga, salle de musculation, espace extérieur, zone de tatami).  
-- Les cours sont encadrés par des **coach sportifs**. On souhaite mémoriser leur nom, prénom et leur date d’arrivée dans le club.  
-- Les **membres** assistent aux cours. Pour chaque membre, on enregistre : numéro d’adhésion, nom, prénom, adresse e-mail, date d’enregistrement et formule choisie (abonnement mensuel, annuel, cours individuels uniquement).  
-- Chaque cours est planifié sur un ou plusieurs **créneaux horaires** (date, heure de début, durée).  
-- On aimerait pouvoir savoir qui a participé réellement à un créneau (présence effective), ce qui peut différer des inscriptions prévues.
+- Une salle de sport propose plusieurs cours collectifs comme le yoga, le pilates, le crossfit ou encore des cours de self défense.  
+- Chaque Créneau d’un cours se déroule dans un espace dédié (salle de yoga, salle de musculation, espace extérieur, zone de tatami).  
+- Les créneaux d’un cours sont encadrés par des coach sportifs. On souhaite mémoriser leur nom, prénom et leur date d’arrivée dans le club.  
+- Les membres assistent aux créneaux d’un cours. Pour chaque membre, on enregistre : numéro d’adhésion, nom, prénom, adresse e-mail, date d’enregistrement et formule choisie (abonnement mensuel, annuel, cours individuels uniquement).  
+- Chaque cours est planifié sur un ou plusieurs créneaux horaires (date, heure de début, durée).  
+On aimerait pouvoir savoir qui a participé réellement à un créneau (présence effective), ce qui peut différer des inscriptions prévues.
+
+**Règle de gestion supplémentaires**
+- Chaque créneau a lieu dans un seul espace, mais un espace peut accueillir plusieurs créneaux.
+- Un créneau doit être encadré par au moins un coach, et peut être encadré par plusieurs coachs en même temps.
+- Un cours peut être planifié sur plusieurs créneaux, mais chaque créneau correspond à un seul cours.
+- Un coach peut encadrer plusieurs créneaux, mais peut aussi exister dans la base sans encadrer de cours (coach nouvellement recruté).
+- Un cours peut être planifié sur plusieurs créneaux, mais chaque créneau correspond à un seul cours.
+- Un membre peut s’inscrire à plusieurs créneaux, et un créneau peut accueillir plusieurs membres.
+- Un créneau peut exister même sans inscriptions
+
 
 **Consignes de l'exercices**
 - Identifiez les **entités** principales, leurs attributs et leurs identifiants
