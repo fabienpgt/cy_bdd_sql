@@ -339,6 +339,108 @@ Pour la liste complète des types : [Documentation PostgreSQL – Types de donn�
 | `geometry`   | —                | Objet géométrique (point, ligne, polygone…) | Localisation GPS d’une scène : `GEOMETRY(Point,4326)` |
 | `geography`  | —                | Variante adaptée aux coordonnées latitude/longitude | Zone couverte par le festival : `GEOGRAPHY(Polygon,4326)` |
 
+#### Bonnes pratiques de nommage SQL
 
+Pour garantir la lisibilité et la cohérence de vos bases de données, il est important de suivre des règles de nommage simples et systématiques.
+
+Ces règles peuvent varier mais voici celles à respecter dans le cadre de ce cours :
+
+1. **Noms de tables au pluriel**  
+   Exemple : `artistes`, `festivaliers`, `concerts`. 
+
+2. **Noms de colonnes au singulier**  
+   Exemple : `nom`, `date_concert`, `id_festivalier`.
+
+3. **Pas d’accents, pas d’espaces, pas de majuscules**  
+   Utilisez le style `snake_case` : `capacite_accueil`, `adresse_email`.  
+   Plus simple à taper et plus compatible avec tous les SGBD.
+
+4. **Clés primaires et étrangères explicites**  
+   - Clés primaires : préférez `id_nomtable` (ex. `id_artiste`, `id_concert`).  
+   - Clés étrangères : reprennent le nom de la clé primaire référencée (ex. `id_scene` dans `concerts`).  
+
+5. **Noms courts mais explicites**  
+   Évitez les abréviations trop cryptiques (`adr_mail`).  
+   Préférez `adresse_email` 
+
+### Exemple du Festival
+
+### MLD
+
+- **artistes**(<u>id_artiste</u>, nom, style_musical, pays)  
+- **scenes**(<u>id_scene</u>, nom, capacite_accueil)  
+- **concerts**(<u>id_concert</u>, date_concert, heure_debut, #id_scene)  
+- **festivaliers**(<u>id_festivalier</u>, nom, prenom, adresse_email)  
+- **personnels**(<u>id_personnel</u>, nom, prenom, fonction, #id_superviseur)  
+- **jouer**(<u>#id_artiste</u>, <u>#id_concert</u>, ordre_passage, duree_prevue)  
+- **assister**(<u>#id_festivalier</u>, <u>#id_concert</u>, type_billet, date_achat)  
+- **travailler**(<u>#id_concert</u>, <u>#id_personnel</u>, horaire, role)  
+
+![festival mld](figures\festival_mld.png)
+
+---
+
+### MPD et Traduction en SQL (PostgreSQL)
+
+
+```sql
+CREATE TABLE artistes (
+    id_artiste SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    style_musical VARCHAR(50),
+    pays VARCHAR(50)
+);
+
+CREATE TABLE scenes (
+    id_scene SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    capacite_accueil INTEGER CHECK (capacite_accueil > 0)
+);
+
+CREATE TABLE concerts (
+    id_concert SERIAL PRIMARY KEY,
+    date_concert DATE NOT NULL,
+    heure_debut TIME NOT NULL,
+    id_scene INT NOT NULL REFERENCES scenes(id_scene)
+);
+
+CREATE TABLE festivaliers (
+    id_festivalier SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    adresse_email VARCHAR(150) UNIQUE NOT NULL
+);
+
+CREATE TABLE personnels (
+    id_personnel SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    fonction VARCHAR(50),
+    id_superviseur INT REFERENCES personnels(id_personnel)
+);
+
+CREATE TABLE jouer (
+    id_artiste INT REFERENCES artistes(id_artiste),
+    id_concert INT REFERENCES concerts(id_concert),
+    ordre_passage INT,
+    duree_prevue INTERVAL,
+    PRIMARY KEY (id_artiste, id_concert)
+);
+
+CREATE TABLE assister (
+    id_festivalier INT REFERENCES festivaliers(id_festivalier),
+    id_concert INT REFERENCES concerts(id_concert),
+    type_billet VARCHAR(50),
+    date_achat DATE,
+    PRIMARY KEY (id_festivalier, id_concert)
+);
+
+CREATE TABLE travailler (
+    id_concert INT REFERENCES concerts(id_concert),
+    id_personnel INT REFERENCES personnels(id_personnel),
+    horaire TIME,
+    role VARCHAR(50),
+    PRIMARY KEY (id_concert, id_personnel)
+);
 
 
