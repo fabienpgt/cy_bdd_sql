@@ -280,6 +280,7 @@ CREATE TABLE concert (
     heure_debut TIME NOT NULL,
     id_scene INT NOT NULL REFERENCES scene(id_scene)
 );
+```
 
 #### Les types de données et leur importance
 
@@ -445,5 +446,5 @@ CREATE TABLE travailler (
     role VARCHAR(50),
     PRIMARY KEY (id_concert, id_personnel)
 );
-
+```
 
