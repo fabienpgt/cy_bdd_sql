@@ -145,3 +145,187 @@ On aimerait pouvoir savoir qui a participé réellement à un créneau (présenc
 - Identifiez les **associations** nécessaires à la gestion de ce système
 - Identifiez les **cardinalités** pour chaque association
 - Réalisez le **MCD** complet
+
+
+---
+
+## Le modèle Logique de données (MLD)
+Le **MCD** permet de représenter les informations du monde réel (entités, attributs, associations) sans se soucier des contraintes techniques.  
+
+Mais pour utiliser un système de gestion de base de données relationnelle (PostgreSQL, MySQL, Oracle…), il faut traduire ce MCD en structures compréhensibles par le SGBD.  
+C’est le rôle du **MLD (modèle logique des données)**.  
+
+Le MLD a deux grandes missions :  
+1. **Transformer** les entités et associations en **tables relationnelles**.  
+2. **Préparer** le passage vers le SQL concret (MPD), en réfléchissant déjà aux **types de données** et aux **contraintes**.  
+
+---
+
+### Du MCD au MLD
+
+
+#### Conversion d'une entité
+Chaque **entité** identifiée dans le MCD se traduit en **table**.  
+- Les attributs deviennent des **colonnes**.  
+- L’identifiant devient la **clé primaire (PK)**.  
+
+Exemple avec l’entité **artistes** :  
+- artistes(<u>id_artiste</u>, nom_artiste, style_musical, pays)
+
+- `id_art` est la clé primaire (identifiant unique de l’artiste).  
+- `nom_art`, `style`, `pays` sont de simples attributs.  
+
+
+---
+
+#### Conversion d'associations 0/1,1 - 0/1,N
+Lorsqu’une association relie deux entités avec une cardinalité max 1 d'un côté ((0,1) ou (1,1)) et N de l'autre ((0,N) ou (1,N)), au profit d'une **clé étrangère** dans la table côté 0,1 ou 1,1 qui référence la **clé primaire** de l'autre table.
+Cette clé étrangère ne peut pas recevoir la valeur vide si la cardinalité est 1,1.
+
+Exemple : association **Programmer (Concerts ↔ Scènes)**  
+- Un concert est programmé sur une seule scène (1,1).  
+- Une scène peut accueillir plusieurs concerts (0,N).  
+
+On obtient :  
+- scenes(<u>id_concert</u>, nom, capacite_accueil)
+- concerts(<u>id_concert</u>, date, heure_debut, #id_scene)
+
+---
+
+#### Conversion d'associations 0/1,N
+Lorsqu’une association relie deux entités avec des cardinalités (0,N) ou (1,N) de part et d'autre, elle devient une nouvelle **table**.  
+
+- La **clé primaire** de cette table est la concaténation des **clés primaires** respectives des deux entités.  
+- Dans le cas d'associations porteuses de données, les données portées deviennent des attributs de la relation correspondante  
+
+Exemple : association **Jouer (Artistes ↔ Concerts)**  
+- Un artiste peut jouer dans plusieurs concerts.  
+- Un concert accueille plusieurs artistes.
+
+On crée :  
+jouer(<u>#id_artiste</u>, <u>#id_concert</u>, ordre_passage, duree_prevue)
+
+
+- La clé primaire est `(id_artiste, id_concert)`.  
+- On ajoute deux attributs propres à l’association : `ordre_passage` et `duree_prevue`.  
+
+---
+
+#### Conversion d'associations 1,1
+Lorsqu'une association relie deux entités avec des cardinalités (0/1,1), on peut la traiter de deux façons :
+- Soit on la traite comme une associations de relations avec les cardinalités (0/1,1) - (0/1,N) en **remplacant l'association par une clé étrangère**. La clé étrangère se voit cependant imposer une contrainte d'unicité.
+- Soit on la traite comme une associations de relations avec les cardinalités (0/1,N) en **créant une table contenant les deux clés primaires**
+
+
+Exemple : l'association *diriger** ci-dessous
+
+Selon la première option, on obtient :
+- services(<u>id_service</u>, nom_service, #numéro employé)
+- employes(<u>id_employe</u>, nom)
+
+Selon la seconde option, on obtient :
+- services(<u>id_service</u>, nom_service)
+- employes(<u>id_employe</u>, nom)
+- diriger(<u>#id_service</u>, <u>#id_employe</u>)
+
+### Les types de données et leur importance
+
+#### Pourquoi les types sont-ils essentiels ?
+Le choix des types de données pour chaque colonne est une étape **cruciale** de la conception.  
+
+Bien choisir ses types permet de :  
+- **Assurer la cohérence** des données (un numéro de pass n’est pas un nombre mais une chaîne de caractères).  
+- **Optimiser l’espace mémoire** (inutile de stocker un code postal en `BIGINT`).  
+- **Améliorer les performances** (un `DATE` se compare plus vite qu’un texte qui contient une date).  
+- **Renforcer la fiabilité** (empêcher l’insertion de valeurs absurdes comme « abc » dans une colonne numérique).  
+
+
+---
+
+#### Les grandes familles de types
+
+### 1. Numériques
+- **INT / INTEGER** : nombres entiers standards.  
+- **SMALLINT / BIGINT** : plus petit ou plus grand que `INT`.  
+- **DECIMAL(p,s) / NUMERIC(p,s)** : nombres décimaux exacts (utile pour les prix, notes, pourcentages).  
+- **FLOAT / REAL / DOUBLE PRECISION** : nombres à virgule flottante (utile pour les mesures scientifiques, moins précis).  
+
+👉 Exemple Festival :  
+- `capacite` (SCENE) → `INT`  
+- `duree` (JOUER) → `INT` (minutes)  
+
+---
+
+### 2. Textuels
+- **CHAR(n)** : texte fixe (utile pour des codes pays comme « FR »).  
+- **VARCHAR(n)** : texte variable (noms, prénoms, e-mails).  
+- **TEXT** : texte long (descriptions, commentaires).  
+
+👉 Exemple Festival :  
+- `nom_scene` (SCENE) → `VARCHAR(100)`  
+- `style` (ARTISTE) → `VARCHAR(50)`  
+
+---
+
+### 3. Temporels
+- **DATE** : une date (AAAA-MM-JJ).  
+- **TIME** : une heure (HH:MM:SS).  
+- **TIMESTAMP** : date + heure combinées.  
+- **INTERVAL** : durée.  
+
+👉 Exemple Festival :  
+- `date_conc` (CONCERT) → `DATE`  
+- `heure_debut` (CONCERT) → `TIME`  
+
+---
+
+### 4. Booléens
+- **BOOLEAN** : vrai ou faux.  
+
+👉 Exemple Festival :  
+- `gratuit` (CONCERT) → `BOOLEAN`  
+
+---
+
+### 5. Types spécialisés (selon les SGBD)
+- **UUID** : identifiant unique universel.  
+- **JSON / JSONB** (PostgreSQL) : données semi-structurées.  
+- **GEOMETRY / GEOGRAPHY** (PostGIS) : données spatiales.  
+- **ARRAY** : tableau de valeurs.  
+
+Ces types sont plus avancés et souvent utilisés dans des contextes modernes (applications web, géospatial, big data).
+
+---
+
+## Contraintes associées aux types
+Au-delà du type, on peut ajouter des **contraintes** :  
+- **NOT NULL** : valeur obligatoire.  
+- **DEFAULT** : valeur par défaut si rien n’est saisi.  
+- **CHECK** : règle de validation (ex. `capacite > 0`).  
+- **UNIQUE** : empêche les doublons.  
+
+👉 Exemple Festival :  
+- `email` (FESTIVALIER) doit être **UNIQUE**.  
+- `capacite` (SCENE) doit être **CHECK (capacite > 0)**.  
+
+---
+
+## Exemple enrichi – MLD du Festival avec types
+
+- **ARTISTE(id_art INT, nom_art VARCHAR(100), style VARCHAR(50), pays VARCHAR(50))**  
+- **SCENE(id_scene INT, nom_scene VARCHAR(100), capacite INT CHECK (capacite > 0))**  
+- **CONCERT(id_conc INT, date_conc DATE, heure_debut TIME, id_scene INT)**  
+- **FESTIVALIER(id_fest INT, nom_fest VARCHAR(100), prenom_fest VARCHAR(100), email VARCHAR(150) UNIQUE, num_pass VARCHAR(50))**  
+- **JOUER(id_art INT, id_conc INT, ordre_passage INT, duree INT)**  
+
+---
+
+## Récapitulatif
+- Le **MLD** transforme le MCD en tables relationnelles (entités → tables, associations 1–N → clés étrangères, associations N–N → tables de jointure).  
+- Les **types de données** garantissent la qualité, la performance et la robustesse de la base.  
+- Les **contraintes** complètent les types pour assurer l’intégrité.  
+
+Cette étape prépare le passage vers le **MPD (modèle physique des données)** et la création effective des tables en SQL.
+
+
+
