@@ -229,19 +229,19 @@ Lorsqu'une association relie deux entités avec des cardinalités (0/1,1), on pe
 - Soit on la traite comme une associations de relations avec les cardinalités (0/1,N) en **créant une table contenant les deux clés primaires**
 
 
-Exemple : l'association *diriger** ci-dessous
+Exemple : l'association **diriger** ci-dessous
 
 ![diriger mcd](figures\employe_service_mcd.png)
 
 Selon la première option, on obtient :
-- services(<u>id_service</u>, nom_service, #numéro employé)
-- employes(<u>id_employe</u>, nom)
+- services(<u>id_service</u>, nom, #id_employe)
+- employes(<u>id_employe</u>, nom, prenom)
 
 ![diriger mld option 1](figures\employe_service_mld1.png)
 
 Selon la seconde option, on obtient :
-- services(<u>id_service</u>, nom_service)
-- employes(<u>id_employe</u>, nom)
+- services(<u>id_service</u>, nom)
+- employes(<u>id_employe</u>, nom, prenom)
 - diriger(<u>#id_service</u>, <u>#id_employe</u>)
 
 ![diriger mld option 2](figures\employe_service_mld2.png)
