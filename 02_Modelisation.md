@@ -423,7 +423,7 @@ CREATE TABLE personnels (
     id_superviseur INT REFERENCES personnels(id_personnel)
 );
 
-CREATE TABLE jouer (
+CREATE TABLE participations (
     id_artiste INT REFERENCES artistes(id_artiste),
     id_concert INT REFERENCES concerts(id_concert),
     ordre_passage INT,
@@ -431,7 +431,7 @@ CREATE TABLE jouer (
     PRIMARY KEY (id_artiste, id_concert)
 );
 
-CREATE TABLE assister (
+CREATE TABLE inscriptions (
     id_festivalier INT REFERENCES festivaliers(id_festivalier),
     id_concert INT REFERENCES concerts(id_concert),
     type_billet VARCHAR(50),
@@ -439,7 +439,7 @@ CREATE TABLE assister (
     PRIMARY KEY (id_festivalier, id_concert)
 );
 
-CREATE TABLE travailler (
+CREATE TABLE assignations (
     id_concert INT REFERENCES concerts(id_concert),
     id_personnel INT REFERENCES personnels(id_personnel),
     horaire TIME,
