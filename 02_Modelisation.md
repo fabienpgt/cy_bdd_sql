@@ -246,7 +246,23 @@ Selon la seconde option, on obtient :
 
 ![diriger mld option 2](figures\employe_service_mld2.png)
 
+---
 
+### Exemple du Festival
+
+- **artistes**(<u>id_artiste</u>, nom, style_musical, pays)  
+- **scenes**(<u>id_scene</u>, nom, capacite_accueil)  
+- **concerts**(<u>id_concert</u>, date_concert, heure_debut, #id_scene)  
+- **festivaliers**(<u>id_festivalier</u>, nom, prenom, adresse_email)  
+- **personnels**(<u>id_personnel</u>, nom, prenom, fonction, #id_superviseur)  
+- **jouer**(<u>#id_artiste</u>, <u>#id_concert</u>, ordre_passage, duree_prevue)  
+- **assister**(<u>#id_festivalier</u>, <u>#id_concert</u>, type_billet, date_achat)  
+- **travailler**(<u>#id_concert</u>, <u>#id_personnel</u>, horaire, role)  
+
+![festival mld](figures\festival_mld.png)
+
+
+## Le Modèle Physique de Données (MPD)
 ### Du MLD au MPD
 
 Le **MPD (modèle physique de données)** est la traduction concrète du MLD dans un **SGBD particulier** (PostgreSQL, MySQL, Oracle, SQL Server, etc.).  
@@ -363,24 +379,11 @@ Ces règles peuvent varier mais voici celles à respecter dans le cadre de ce co
    Évitez les abréviations trop cryptiques (`adr_mail`).  
    Préférez `adresse_email` 
 
-### Exemple du Festival
 
-### MLD
-
-- **artistes**(<u>id_artiste</u>, nom, style_musical, pays)  
-- **scenes**(<u>id_scene</u>, nom, capacite_accueil)  
-- **concerts**(<u>id_concert</u>, date_concert, heure_debut, #id_scene)  
-- **festivaliers**(<u>id_festivalier</u>, nom, prenom, adresse_email)  
-- **personnels**(<u>id_personnel</u>, nom, prenom, fonction, #id_superviseur)  
-- **jouer**(<u>#id_artiste</u>, <u>#id_concert</u>, ordre_passage, duree_prevue)  
-- **assister**(<u>#id_festivalier</u>, <u>#id_concert</u>, type_billet, date_achat)  
-- **travailler**(<u>#id_concert</u>, <u>#id_personnel</u>, horaire, role)  
-
-![festival mld](figures\festival_mld.png)
 
 ---
 
-### MPD et Traduction en SQL (PostgreSQL)
+### Exemple du Festival
 
 
 ```sql
