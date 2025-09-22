@@ -173,12 +173,11 @@ Chaque **entité** identifiée dans le MCD se traduit en **table**.
 - L’identifiant devient la **clé primaire (PK)**.  
 
 Exemple avec l’entité **artistes** :  
-- artistes(<u>id_artiste</u>, nom_artiste, style_musical, pays)
 
 ![artiste MLD](figures\mld_artistes.png)
 
-- `id_artiste` est la clé primaire (identifiant unique de l’artiste).  
-- `nom_artite`, `style`, `pays` sont de simples attributs.  
+- `id_artiste` est la clé primaire.  
+- `nom`, `style_musical`, `pays` sont de simples attributs.  
 
 
 ---
@@ -192,11 +191,12 @@ Exemple : association **Programmer (Concerts ↔ Scènes)**
 - Une scène peut accueillir plusieurs concerts (0,N).  
 
 On obtient :  
-- scenes(<u>id_concert</u>, nom, capacite_accueil)
-- concerts(<u>id_concert</u>, date, heure_debut, #id_scene)
 
 ![scene concert MLD](figures\concert_scene_mld.png)
 
+
+- `id_concert` est la clé primaire.  
+- `id_scene` est la clé primaire de la table scènes et une clé étrangère de la table concerts.
 ---
 
 #### Conversion d'associations 0/1,N
@@ -209,8 +209,7 @@ Exemple : association **Jouer (Artistes ↔ Concerts)**
 - Un artiste peut jouer dans plusieurs concerts.  
 - Un concert accueille plusieurs artistes.
 
-On crée :  
-jouer(<u>#id_artiste</u>, <u>#id_concert</u>, ordre_passage, duree_prevue)
+On crée :
 
 ![artiste jouer concert MLD](figures\artiste_jouer_concert_mld.png)
 
@@ -228,20 +227,22 @@ Lorsqu'une association relie deux entités avec des cardinalités (0/1,1), on pe
 
 Exemple : l'association *diriger** ci-dessous
 
-![Correction Sport](figures\sport_mcd_correction.png)
+![diriger mcd](figures\employe_service_mcd.png)
 
 Selon la première option, on obtient :
 - services(<u>id_service</u>, nom_service, #numéro employé)
 - employes(<u>id_employe</u>, nom)
 
-![Correction Sport](figures\sport_mcd_correction.png)
+![diriger mld option 1](figures\employe_service_mld1.png)
 
 Selon la seconde option, on obtient :
 - services(<u>id_service</u>, nom_service)
 - employes(<u>id_employe</u>, nom)
 - diriger(<u>#id_service</u>, <u>#id_employe</u>)
 
-![Correction Sport](figures\sport_mcd_correction.png)
+![diriger mld option 2](figures\employe_service_mld2.png)
+
+
 
 ### Les types de données et leur importance
 
