@@ -8,3 +8,5 @@ prev_next_buttons_location: top
 prev_next_buttons_location: bottom
 prev_next_buttons_location: both
 search_enabled: true
+repo_url: 'https://github.com/fabienpgt/cy_bdd_sql'
+edit_on_github: true
