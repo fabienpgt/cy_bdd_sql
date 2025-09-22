@@ -146,6 +146,9 @@ On aimerait pouvoir savoir qui a participé réellement à un créneau (présenc
 - Identifiez les **cardinalités** pour chaque association
 - Réalisez le **MCD** complet
 
+**Correction possible**
+![Correction Sport](figures\sport_mcd_correction.png)
+
 
 ---
 
@@ -172,8 +175,10 @@ Chaque **entité** identifiée dans le MCD se traduit en **table**.
 Exemple avec l’entité **artistes** :  
 - artistes(<u>id_artiste</u>, nom_artiste, style_musical, pays)
 
-- `id_art` est la clé primaire (identifiant unique de l’artiste).  
-- `nom_art`, `style`, `pays` sont de simples attributs.  
+![artiste MLD](figures\mld_artistes.png)
+
+- `id_artiste` est la clé primaire (identifiant unique de l’artiste).  
+- `nom_artite`, `style`, `pays` sont de simples attributs.  
 
 
 ---
@@ -190,6 +195,8 @@ On obtient :
 - scenes(<u>id_concert</u>, nom, capacite_accueil)
 - concerts(<u>id_concert</u>, date, heure_debut, #id_scene)
 
+![scene concert MLD](figures\concert_scene_mld.png)
+
 ---
 
 #### Conversion d'associations 0/1,N
@@ -205,6 +212,8 @@ Exemple : association **Jouer (Artistes ↔ Concerts)**
 On crée :  
 jouer(<u>#id_artiste</u>, <u>#id_concert</u>, ordre_passage, duree_prevue)
 
+![artiste jouer concert MLD](figures\artiste_jouer_concert_mld.png)
+
 
 - La clé primaire est `(id_artiste, id_concert)`.  
 - On ajoute deux attributs propres à l’association : `ordre_passage` et `duree_prevue`.  
@@ -219,14 +228,20 @@ Lorsqu'une association relie deux entités avec des cardinalités (0/1,1), on pe
 
 Exemple : l'association *diriger** ci-dessous
 
+![Correction Sport](figures\sport_mcd_correction.png)
+
 Selon la première option, on obtient :
 - services(<u>id_service</u>, nom_service, #numéro employé)
 - employes(<u>id_employe</u>, nom)
+
+![Correction Sport](figures\sport_mcd_correction.png)
 
 Selon la seconde option, on obtient :
 - services(<u>id_service</u>, nom_service)
 - employes(<u>id_employe</u>, nom)
 - diriger(<u>#id_service</u>, <u>#id_employe</u>)
+
+![Correction Sport](figures\sport_mcd_correction.png)
 
 ### Les types de données et leur importance
 
@@ -244,26 +259,19 @@ Bien choisir ses types permet de :
 
 #### Les grandes familles de types
 
-### 1. Numériques
+##### 1. Numériques
 - **INT / INTEGER** : nombres entiers standards.  
 - **SMALLINT / BIGINT** : plus petit ou plus grand que `INT`.  
 - **DECIMAL(p,s) / NUMERIC(p,s)** : nombres décimaux exacts (utile pour les prix, notes, pourcentages).  
 - **FLOAT / REAL / DOUBLE PRECISION** : nombres à virgule flottante (utile pour les mesures scientifiques, moins précis).  
-
-👉 Exemple Festival :  
-- `capacite` (SCENE) → `INT`  
-- `duree` (JOUER) → `INT` (minutes)  
+- **SERIAL** : Idem que INT mais généré automatiquement de manière incrémentale.
 
 ---
 
-### 2. Textuels
+##### 2. Textuels
 - **CHAR(n)** : texte fixe (utile pour des codes pays comme « FR »).  
 - **VARCHAR(n)** : texte variable (noms, prénoms, e-mails).  
-- **TEXT** : texte long (descriptions, commentaires).  
-
-👉 Exemple Festival :  
-- `nom_scene` (SCENE) → `VARCHAR(100)`  
-- `style` (ARTISTE) → `VARCHAR(50)`  
+- **TEXT** : texte long (descriptions, commentaires).   
 
 ---
 
@@ -273,17 +281,10 @@ Bien choisir ses types permet de :
 - **TIMESTAMP** : date + heure combinées.  
 - **INTERVAL** : durée.  
 
-👉 Exemple Festival :  
-- `date_conc` (CONCERT) → `DATE`  
-- `heure_debut` (CONCERT) → `TIME`  
-
 ---
 
 ### 4. Booléens
 - **BOOLEAN** : vrai ou faux.  
-
-👉 Exemple Festival :  
-- `gratuit` (CONCERT) → `BOOLEAN`  
 
 ---
 
@@ -293,7 +294,7 @@ Bien choisir ses types permet de :
 - **GEOMETRY / GEOGRAPHY** (PostGIS) : données spatiales.  
 - **ARRAY** : tableau de valeurs.  
 
-Ces types sont plus avancés et souvent utilisés dans des contextes modernes (applications web, géospatial, big data).
+Pour plus d'information sur les types de données : https://docs.postgresql.fr/9.6/datatype.html 
 
 ---
 
@@ -304,9 +305,6 @@ Au-delà du type, on peut ajouter des **contraintes** :
 - **CHECK** : règle de validation (ex. `capacite > 0`).  
 - **UNIQUE** : empêche les doublons.  
 
-👉 Exemple Festival :  
-- `email` (FESTIVALIER) doit être **UNIQUE**.  
-- `capacite` (SCENE) doit être **CHECK (capacite > 0)**.  
 
 ---
 
