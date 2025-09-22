@@ -247,10 +247,27 @@ Selon la seconde option, on obtient :
 ![diriger mld option 2](figures\employe_service_mld2.png)
 
 
+### Du MLD au MPD
 
-### Les types de données et leur importance
+Le **MPD (modèle physique de données)** est la traduction concrète du MLD dans un **SGBD particulier** (PostgreSQL, MySQL, Oracle, SQL Server, etc.).  
+Cette étape consiste à écrire les requêtes SQL qui vont réellement **créer les tables** avec leurs colonnes, leurs types de données et leurs contraintes.  
 
-#### Pourquoi les types sont-ils essentiels ?
+
+Exemple :  
+- MLD → concerts(<u>id_concert</u>, date, heure_debut, #id_scene)
+- MPD (PostgreSQL) →  
+
+```sql
+CREATE TABLE concert (
+    id_concert SERIAL PRIMARY KEY,
+    date DATE NOT NULL,
+    heure_debut TIME NOT NULL,
+    id_scene INT NOT NULL REFERENCES scene(id_scene)
+);
+
+#### Les types de données et leur importance
+
+##### Pourquoi les types sont-ils essentiels ?
 Le choix des types de données pour chaque colonne est une étape **cruciale** de la conception.  
 
 Bien choisir ses types permet de :  
@@ -262,73 +279,66 @@ Bien choisir ses types permet de :
 
 ---
 
-#### Les grandes familles de types
+##### Les types de données les plus courants dans PostgreSQL
+Pour la liste complète des types : [Documentation PostgreSQL – Types de données](https://docs.postgresql.fr/9.6/datatype.html)  
 
-##### 1. Numériques
-- **INT / INTEGER** : nombres entiers standards.  
-- **SMALLINT / BIGINT** : plus petit ou plus grand que `INT`.  
-- **DECIMAL(p,s) / NUMERIC(p,s)** : nombres décimaux exacts (utile pour les prix, notes, pourcentages).  
-- **FLOAT / REAL / DOUBLE PRECISION** : nombres à virgule flottante (utile pour les mesures scientifiques, moins précis).  
-- **SERIAL** : Idem que INT mais généré automatiquement de manière incrémentale.
-
----
-
-##### 2. Textuels
-- **CHAR(n)** : texte fixe (utile pour des codes pays comme « FR »).  
-- **VARCHAR(n)** : texte variable (noms, prénoms, e-mails).  
-- **TEXT** : texte long (descriptions, commentaires).   
-
----
-
-### 3. Temporels
-- **DATE** : une date (AAAA-MM-JJ).  
-- **TIME** : une heure (HH:MM:SS).  
-- **TIMESTAMP** : date + heure combinées.  
-- **INTERVAL** : durée.  
+###### 1. Numériques
+| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
+|--------------|------------------|-------------|------------------------|
+| `smallint`   | `int2`           | Entier sur 2 octets (-32 768 à 32 767) | Âge d’un festivalier |
+| `integer`    | `int`, `int4`    | Entier standard sur 4 octets | Capacité d’accueil d’une scène |
+| `bigint`     | `int8`           | Entier sur 8 octets | Compteur de billets vendus sur plusieurs années |
+| `numeric(p,s)` / `decimal(p,s)` | — | Nombre exact avec précision et échelle définies | Prix d’un billet `NUMERIC(6,2)` |
+| `real`       | `float4`        | Nombre à virgule flottante simple précision (~6 décimales) | Température mesurée en °C |
+| `double precision` | `float8`  | Nombre à virgule flottante double précision (~15 décimales) | Coordonnées GPS calculées |
+| `serial`     | `serial4`       | Entier auto-incrémenté basé sur `integer` | Identifiant d’artiste |
+| `bigserial`  | `serial8`       | Entier auto-incrémenté basé sur `bigint` | Identifiant unique global |
 
 ---
 
-### 4. Booléens
-- **BOOLEAN** : vrai ou faux.  
+###### 2. Texte et caractères
+| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
+|--------------|------------------|-------------|------------------------|
+| `character(n)` | `char(n)`      | Chaîne de longueur fixe | Code pays ISO : `CHAR(2)` (ex. "FR") |
+| `character varying(n)` | `varchar(n)` | Chaîne de longueur variable (taille max définie) | Nom d’artiste `VARCHAR(100)` |
+| `text`       | —                | Chaîne de longueur illimitée | Biographie d’un artiste |
 
 ---
 
-### 5. Types spécialisés (selon les SGBD)
-- **UUID** : identifiant unique universel.  
-- **JSON / JSONB** (PostgreSQL) : données semi-structurées.  
-- **GEOMETRY / GEOGRAPHY** (PostGIS) : données spatiales.  
-- **ARRAY** : tableau de valeurs.  
-
-Pour plus d'information sur les types de données : https://docs.postgresql.fr/9.6/datatype.html 
-
----
-
-## Contraintes associées aux types
-Au-delà du type, on peut ajouter des **contraintes** :  
-- **NOT NULL** : valeur obligatoire.  
-- **DEFAULT** : valeur par défaut si rien n’est saisi.  
-- **CHECK** : règle de validation (ex. `capacite > 0`).  
-- **UNIQUE** : empêche les doublons.  
-
+###### 3. Temporels (date et heure)
+| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
+|--------------|------------------|-------------|------------------------|
+| `date`       | —                | Date (AAAA-MM-JJ) | Date d’un concert |
+| `time [without time zone]` | — | Heure (HH:MM:SS) | Heure de début d’un concert |
+| `time with time zone` | `timetz` | Heure avec fuseau horaire | Diffusion d’un concert en ligne (multi-pays) |
+| `timestamp [without time zone]` | — | Date + heure sans fuseau | Création d’un compte utilisateur |
+| `timestamp with time zone` | `timestamptz` | Date + heure avec fuseau | Horodatage exact d’une commande |
+| `interval`   | —                | Durée | Durée prévue d’un concert (ex. `INTERVAL '2 hours'`) |
 
 ---
 
-## Exemple enrichi – MLD du Festival avec types
-
-- **ARTISTE(id_art INT, nom_art VARCHAR(100), style VARCHAR(50), pays VARCHAR(50))**  
-- **SCENE(id_scene INT, nom_scene VARCHAR(100), capacite INT CHECK (capacite > 0))**  
-- **CONCERT(id_conc INT, date_conc DATE, heure_debut TIME, id_scene INT)**  
-- **FESTIVALIER(id_fest INT, nom_fest VARCHAR(100), prenom_fest VARCHAR(100), email VARCHAR(150) UNIQUE, num_pass VARCHAR(50))**  
-- **JOUER(id_art INT, id_conc INT, ordre_passage INT, duree INT)**  
+###### 4. Booléens
+| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
+|--------------|------------------|-------------|------------------------|
+| `boolean`    | `bool`           | Vrai ou Faux | Concert gratuit ? (`TRUE`/`FALSE`) |
 
 ---
 
-## Récapitulatif
-- Le **MLD** transforme le MCD en tables relationnelles (entités → tables, associations 1–N → clés étrangères, associations N–N → tables de jointure).  
-- Les **types de données** garantissent la qualité, la performance et la robustesse de la base.  
-- Les **contraintes** complètent les types pour assurer l’intégrité.  
+###### 5. Types spécialisés utiles
+| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
+|--------------|------------------|-------------|------------------------|
+| `uuid`       | —                | Identifiant unique universel | Identifiant de festivalier généré automatiquement |
+| `json`       | —                | Données JSON textuelles | Données d’un billet en JSON brut |
+| `jsonb`      | —                | Données JSON binaires (plus efficaces) | Stocker les préférences d’un utilisateur : `{"langue":"fr","newsletter":true}` |
 
-Cette étape prépare le passage vers le **MPD (modèle physique des données)** et la création effective des tables en SQL.
+---
+
+###### 6. Types particuliers avec extensions (PostGIS)
+| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
+|--------------|------------------|-------------|------------------------|
+| `geometry`   | —                | Objet géométrique (point, ligne, polygone…) | Localisation GPS d’une scène : `GEOMETRY(Point,4326)` |
+| `geography`  | —                | Variante adaptée aux coordonnées latitude/longitude | Zone couverte par le festival : `GEOGRAPHY(Polygon,4326)` |
+
 
 
 
