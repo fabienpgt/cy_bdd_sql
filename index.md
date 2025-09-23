@@ -3,7 +3,7 @@
 [De la modélisation à la conception d’une base de données](02_Modelisation.md)
 [Devoir Maison](03_Devoir_maison.md)
 
-## Mise à jour du site
+**MAJ**
 
 **23/09/2025**
 - Ajout de la section `Ressources` dans [Introduction](00_Introduction.md)
