@@ -63,7 +63,7 @@ L’objectif de ce cours est de découvrir et de comprendre les systèmes de ges
 ## Ressources
 
 - Ce site
-- Support de présentation [BDD - SQL.pdf]({{'\figures\BDD - SQL.pdf' | relative_url }})
+- Support de présentation [BDD-SQL.pdf]({{ '/figures/BDD-SQL.pdf' | relative_url }})
 
 ---------------------------
 ## Contact
