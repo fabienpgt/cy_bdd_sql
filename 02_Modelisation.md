@@ -262,25 +262,15 @@ Selon la seconde option, on obtient :
 ![festival mld](figures\festival_mld.png)
 
 
+---
+
 ## Le Modèle Physique de Données (MPD)
 ### Du MLD au MPD
 
 Le **MPD (modèle physique de données)** est la traduction concrète du MLD dans un **SGBD particulier** (PostgreSQL, MySQL, Oracle, SQL Server, etc.).  
 Cette étape consiste à écrire les requêtes SQL qui vont réellement **créer les tables** avec leurs colonnes, leurs types de données et leurs contraintes.  
 
-
-Exemple :  
-- MLD → concerts(<u>id_concert</u>, date, heure_debut, #id_scene)
-- MPD (PostgreSQL) →  
-
-```sql
-CREATE TABLE concert (
-    id_concert SERIAL PRIMARY KEY,
-    date DATE NOT NULL,
-    heure_debut TIME NOT NULL,
-    id_scene INT NOT NULL REFERENCES scene(id_scene)
-);
-```
+---
 
 #### Les types de données et leur importance
 
@@ -300,61 +290,72 @@ Bien choisir ses types permet de :
 Pour la liste complète des types : [Documentation PostgreSQL – Types de données](https://docs.postgresql.fr/9.6/datatype.html)  
 
 ###### 1. Numériques
-| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
-|--------------|------------------|-------------|------------------------|
-| `smallint`   | `int2`           | Entier sur 2 octets (-32 768 à 32 767) | Âge d’un festivalier |
-| `integer`    | `int`, `int4`    | Entier standard sur 4 octets | Capacité d’accueil d’une scène |
-| `bigint`     | `int8`           | Entier sur 8 octets | Compteur de billets vendus sur plusieurs années |
-| `numeric(p,s)` / `decimal(p,s)` | — | Nombre exact avec précision et échelle définies | Prix d’un billet `NUMERIC(6,2)` |
-| `real`       | `float4`        | Nombre à virgule flottante simple précision (~6 décimales) | Température mesurée en °C |
-| `double precision` | `float8`  | Nombre à virgule flottante double précision (~15 décimales) | Coordonnées GPS calculées |
-| `serial`     | `serial4`       | Entier auto-incrémenté basé sur `integer` | Identifiant d’artiste |
-| `bigserial`  | `serial8`       | Entier auto-incrémenté basé sur `bigint` | Identifiant unique global |
+- **smallint** (alias : `int2`) : entier sur 2 octets, valeurs de -32 768 à 32 767.  
+  Exemple : âge d’un festivalier.  
+- **integer** (alias : `int`, `int4`) : entier standard sur 4 octets.  
+  Exemple : capacité d’accueil d’une scène.  
+- **bigint** (alias : `int8`) : entier sur 8 octets.  
+  Exemple : compteur de billets vendus sur plusieurs années.  
+- **numeric(p,s)** ou **decimal(p,s)** : nombre exact avec précision et échelle définies.  
+  Exemple : prix d’un billet `NUMERIC(6,2)`.  
+- **real** (alias : `float4`) : nombre à virgule flottante simple précision (~6 décimales).  
+  Exemple : température mesurée en °C.  
+- **double precision** (alias : `float8`) : nombre à virgule flottante double précision (~15 décimales).  
+  Exemple : coordonnées GPS calculées.  
+- **serial** (alias : `serial4`) : entier auto-incrémenté basé sur `integer`.  
+  Exemple : identifiant d’artiste.  
+- **bigserial** (alias : `serial8`) : entier auto-incrémenté basé sur `bigint`.  
+  Exemple : identifiant unique global.  
 
 ---
 
 ###### 2. Texte et caractères
-| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
-|--------------|------------------|-------------|------------------------|
-| `character(n)` | `char(n)`      | Chaîne de longueur fixe | Code pays ISO : `CHAR(2)` (ex. "FR") |
-| `character varying(n)` | `varchar(n)` | Chaîne de longueur variable (taille max définie) | Nom d’artiste `VARCHAR(100)` |
-| `text`       | —                | Chaîne de longueur illimitée | Biographie d’un artiste |
+- **character(n)** (alias : `char(n)`) : chaîne de longueur fixe.  
+  Exemple : code pays ISO `CHAR(2)` → "FR".  
+- **character varying(n)** (alias : `varchar(n)`) : chaîne de longueur variable avec une limite fixée.  
+  Exemple : nom d’artiste `VARCHAR(100)`.  
+- **text** : chaîne de longueur illimitée.  
+  Exemple : biographie d’un artiste.  
 
 ---
 
 ###### 3. Temporels (date et heure)
-| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
-|--------------|------------------|-------------|------------------------|
-| `date`       | —                | Date (AAAA-MM-JJ) | Date d’un concert |
-| `time [without time zone]` | — | Heure (HH:MM:SS) | Heure de début d’un concert |
-| `time with time zone` | `timetz` | Heure avec fuseau horaire | Diffusion d’un concert en ligne (multi-pays) |
-| `timestamp [without time zone]` | — | Date + heure sans fuseau | Création d’un compte utilisateur |
-| `timestamp with time zone` | `timestamptz` | Date + heure avec fuseau | Horodatage exact d’une commande |
-| `interval`   | —                | Durée | Durée prévue d’un concert (ex. `INTERVAL '2 hours'`) |
+- **date** : une date (AAAA-MM-JJ).  
+  Exemple : date d’un concert.  
+- **time [without time zone]** : heure (HH:MM:SS).  
+  Exemple : heure de début d’un concert.  
+- **time with time zone** (alias : `timetz`) : heure avec fuseau horaire.  
+  Exemple : diffusion d’un concert en ligne dans plusieurs pays.  
+- **timestamp [without time zone]** : date et heure sans fuseau.  
+  Exemple : création d’un compte utilisateur.  
+- **timestamp with time zone** (alias : `timestamptz`) : date et heure avec fuseau horaire.  
+  Exemple : horodatage exact d’une commande.  
+- **interval** : durée exprimée en jours, heures, minutes.  
+  Exemple : durée prévue d’un concert `INTERVAL '2 hours'`.  
 
 ---
 
 ###### 4. Booléens
-| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
-|--------------|------------------|-------------|------------------------|
-| `boolean`    | `bool`           | Vrai ou Faux | Concert gratuit ? (`TRUE`/`FALSE`) |
+- **boolean** (alias : `bool`) : valeur logique `TRUE` ou `FALSE`.  
+  Exemple : indiquer si un concert est gratuit.  
 
 ---
 
 ###### 5. Types spécialisés utiles
-| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
-|--------------|------------------|-------------|------------------------|
-| `uuid`       | —                | Identifiant unique universel | Identifiant de festivalier généré automatiquement |
-| `json`       | —                | Données JSON textuelles | Données d’un billet en JSON brut |
-| `jsonb`      | —                | Données JSON binaires (plus efficaces) | Stocker les préférences d’un utilisateur : `{"langue":"fr","newsletter":true}` |
+- **uuid** : identifiant unique universel.  
+  Exemple : identifiant généré automatiquement pour un festivalier.  
+- **json** : stockage de données JSON sous forme texte.  
+  Exemple : données d’un billet en JSON brut.  
+- **jsonb** : stockage JSON binaire (plus efficace pour les recherches).  
+  Exemple : préférences d’un utilisateur → `{"langue":"fr","newsletter":true}`.  
 
 ---
 
-###### 6. Types particuliers avec extensions (PostGIS)
-| Nom officiel | Alias PostgreSQL | Description | Exemple d’utilisation |
-|--------------|------------------|-------------|------------------------|
-| `geometry`   | —                | Objet géométrique (point, ligne, polygone…) | Localisation GPS d’une scène : `GEOMETRY(Point,4326)` |
-| `geography`  | —                | Variante adaptée aux coordonnées latitude/longitude | Zone couverte par le festival : `GEOGRAPHY(Polygon,4326)` |
+###### 6. Types particuliers avec PostGIS
+- **geometry** : objets géométriques (points, lignes, polygones…).
+
+
+---
 
 #### Bonnes pratiques de nommage SQL
 
@@ -380,12 +381,57 @@ Ces règles peuvent varier mais voici celles à respecter dans le cadre de ce co
    Évitez les abréviations trop cryptiques (`adr_mail`).  
    Préférez `adresse_email` 
 
+---
 
+#### La commande CREATE TABLE
+
+##### Syntaxe générale
+
+```sql
+CREATE TABLE nom_table (
+    nom_colonne type_donnee [contrainte],
+    nom_colonne type_donnee [contrainte],
+    ...
+    [contraintes_table]
+);
+```
+
+- **`nom_table`** : nom de la table  
+- **`nom_colonne`** : nom de chaque colonne 
+- **`type_donnee`** : type choisi pour la colonne.  
+- **`contrainte`** : règle appliquée à une colonne.  
+- **`contraintes_table`** : contraintes globales (ex. clé primaire composée).
+
+---
+
+##### Contraintes les plus courantes
+
+- **`PRIMARY KEY`** : identifie de façon unique chaque ligne de la table.  
+- **`FOREIGN KEY`** : établit une relation avec une autre table.  
+- **`NOT NULL`** : valeur obligatoire.  
+- **`UNIQUE`** : empêche les doublons.  
+- **`DEFAULT`** : valeur attribuée automatiquement si rien n’est saisi.  
+- **`CHECK`** : impose une condition (ex. `CHECK (capacite > 0)`).  
+
+---
+
+**Exemple : Création d’une table `concerts`**
+
+```sql
+CREATE TABLE concerts (
+    id_concert SERIAL PRIMARY KEY,
+    date_concert DATE NOT NULL,
+    heure_debut TIME NOT NULL,
+    id_scene INT NOT NULL REFERENCES scenes(id_scene),
+    duree INTERVAL CHECK (duree > INTERVAL '0 minutes')
+);
+```
 
 ---
 
 ### Exemple du Festival
 
+![festival mpd](figures\mcd-festival_mpd.png)
 
 ```sql
 CREATE TABLE artistes (
