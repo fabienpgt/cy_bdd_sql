@@ -159,8 +159,8 @@ Mais pour utiliser un système de gestion de base de données relationnelle (Pos
 C’est le rôle du **MLD (modèle logique des données)**.  
 
 Le MLD a deux grandes missions :  
-1. **Transformer** les entités et associations en **tables relationnelles**.  
-2. **Préparer** le passage vers le SQL concret (MPD), en réfléchissant déjà aux **types de données** et aux **contraintes**.  
+1. **Transformer** les entités et associations en **tables**.  
+2. **Préparer** le passage vers le SQL concret (MPD)
 
 ---
 
