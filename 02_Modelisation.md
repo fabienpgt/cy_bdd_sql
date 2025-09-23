@@ -422,8 +422,7 @@ CREATE TABLE concerts (
     id_concert SERIAL PRIMARY KEY,
     date_concert DATE NOT NULL,
     heure_debut TIME NOT NULL,
-    id_scene INT NOT NULL REFERENCES scenes(id_scene),
-    duree INTERVAL CHECK (duree > INTERVAL '0 minutes')
+    id_scene INT NOT NULL REFERENCES scenes(id_scene)
 );
 ```
 
