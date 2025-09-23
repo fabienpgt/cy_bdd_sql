@@ -1,11 +1,11 @@
-- [Introduction](00_Introduction.md)
-- [Concepts Clés](01_BDD_Theorie.md)
-- [De la modélisation à la conception d’une base de données](02_Modelisation.md)
-- [Devoir Maison](03_Devoir_maison.md)
+[Introduction](00_Introduction.md)
+[Concepts Clés](01_BDD_Theorie.md)
+[De la modélisation à la conception d’une base de données](02_Modelisation.md)
+[Devoir Maison](03_Devoir_maison.md)
 
 ## Mise à jour du site
 
-**23/09/2025**:
+**23/09/2025**
 - Ajout de la section `Ressources` dans [Introduction](00_Introduction.md)
 - Ajout du lien vers le support de présentation dans la section `Introduction/Ressources`
 
