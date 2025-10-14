@@ -69,21 +69,21 @@ Ce devoir a pour but de vérifier votre capacité à :
 
 ## Règles de nommage et de présentation
 
-### 🔹 Noms de tables
+**Noms de tables**
 - Toujours au **pluriel**, en **minuscules** et sans **accent**
 - Avec un **underscore** pour séparer les mots.
 - Pas de verbe
 
-### 🔹 Noms de colonnes
+**Noms de colonnes**
 - Toujours au **singulier**, , en **minuscules** et sans **accent**
 - Nom de colonnes clairs, explicites et cohérents avec leur contenu.
 - Avec un underscore pour séparer les mots.
 
-### 🔹 Clés primaires
+**Clés primaires**
 - Préfixées par `id_` suivi du nom de la table.
 - Une seule clé primaire par table.
 
-### 🔹 Clés étrangères
+**Clés étrangères**
 - Préfixées par `id_` suivi du nom de la table référencée. (Lorsque c'est possible)
 - Reliées à une clé primaire existante.
 
