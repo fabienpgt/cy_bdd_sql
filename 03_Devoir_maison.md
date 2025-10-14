@@ -67,10 +67,77 @@ Ce devoir a pour but de vérifier votre capacité à :
 - Les schémas (MCD, MLD, MPD) peuvent être réalisés avec un logiciel (draw.io, Lucidchart, etc.) ou dessinés à la main puis scannés.  
 - Chaque étape doit contenir à la fois la **production attendue** (liste, schéma, script) et une **explication de vos choix**.  
 
+## Règles de nommage et de présentation
+
+### 🔹 Noms de tables
+- Toujours au **pluriel**, en **minuscules** et sans **accent**
+- Avec un **underscore** pour séparer les mots.
+- Pas de verbe
+
+### 🔹 Noms de colonnes
+- Toujours au **singulier**, , en **minuscules** et sans **accent**
+- Nom de colonnes clairs, explicites et cohérents avec leur contenu.
+- Avec un underscore pour séparer les mots.
+
+### 🔹 Clés primaires
+- Préfixées par `id_` suivi du nom de la table.
+- Une seule clé primaire par table.
+
+### 🔹 Clés étrangères
+- Préfixées par `id_` suivi du nom de la table référencée. (Lorsque c'est possible)
+- Reliées à une clé primaire existante.
+
+
 ---
 
-## Critères d’évaluation
-A définir  
+## Grille d’évaluation (sur 20 points)
+
+### 1. Contexte du projet — 2 points
+Évalue la capacité à présenter clairement le sujet et à donner du sens à la modélisation.  
+- Le contexte est compréhensible, cohérent et pertinent.  
+- Les acteurs, objets et processus principaux sont identifiés.  
+- Le lien avec les entités futures est explicite.
+
+### 2. Règles de gestion du métier — 3 points
+Évalue la capacité à formuler correctement les règles de gestion du domaine.  
+- Les règles sont claires, précises et non redondantes.  
+- Elles couvrent les principales interactions du domaine.  
+- Chaque règle décrit une relation entre deux entités maximum.
+
+### 3. Modèle Conceptuel de Données (MCD) — 4 points
+Évalue la traduction des règles en entités, associations et cardinalités.  
+- Le schéma est complet et cohérent avec les règles.  
+- Les cardinalités sont justes et justifiées.  
+- Les entités et associations sont bien distinguées.  
+- Le nommage et la présentation sont conformes aux conventions.
+
+### 4. Modèle Logique de Données (MLD) — 3 points
+Évalue la capacité à transformer correctement le MCD en modèle relationnel.  
+- Les associations sont correctement transformées en tables ou en clés étrangères.  
+- Le MLD reste cohérent avec le MCD initial.  
+- Les choix de transformation sont expliqués clairement.
+
+### 5. Modèle Physique de Données (MPD) — 3 points
+Évalue la déclinaison du modèle logique en modèle physique PostgreSQL.  
+- Les types de données sont adaptés à chaque colonne.  
+- Les contraintes (NOT NULL, UNIQUE, CHECK…) sont pertinentes et justifiées.  
+- Les clés primaires et étrangères sont bien définies.
+
+### 6. Requêtes SQL – Création des tables — 3 points
+Évalue la capacité à traduire le modèle physique en code SQL fonctionnel.  
+- Le script SQL est correct et exécutable sous PostgreSQL.  
+- Les tables créées respectent le MPD.  
+- Les contraintes et clés sont bien présentes.
+
+### 7. Qualité globale et justification — 2 points
+Évalue la rigueur, la clarté et la qualité du rendu.  
+- Le document est bien structuré et agréable à lire.  
+- Les justifications sont logiques et bien formulées.  
+- Le vocabulaire est adapté et l’orthographe soignée.
+
+### Bonus — jusqu’à +1 point
+- Sujet original ou issu d’un cas réel bien exploité.  
+- Schémas et mise en page particulièrement clairs.
 
 ---
 
