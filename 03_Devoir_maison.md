@@ -142,7 +142,7 @@ Ce devoir a pour but de vérifier votre capacité à :
 ---
 
 ## Informations pratiques
-- **Date limite de remise :** Lundi 13 Octobre
+- **Date limite de remise :** Dimanche 19 Octobre à 23h59
 - **Format :** PDF (texte et schémas intégrés) + fichier SQL à envoyer à fabien.pageot@gmail.com. Les noms de fichier doivent contenir votre nom et prénom.
 - **Exemple de rendu** : 
   - [devoir_maison_exemple_fabien_pageot.pdf]({{ '/documents/devoir_maison_exemple_fabien_pageot.pdf' | relative_url }}) 
