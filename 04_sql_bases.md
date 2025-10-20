@@ -112,15 +112,15 @@ Contient les transporteurs utilisés pour les livraisons.
 
 ---
 
-## Schéma simplifié des relations
+### Schéma simplifié des relations
 
-## Installation de la base Northwind sur PostgreSQL avec DBeaver
+### Installation de la base Northwind sur PostgreSQL avec DBeaver
 
-### 1. Télécharger le script SQL
+**1. Télécharger le script SQL**
 
 Télécharger script sql d’installation de Northwind ici :  [northwind.sql]({{ '/datasets/northwind.sql' | relative_url }})
 
-### 2. Ouvrir DBeaver et créer une nouvelle base
+**2. Ouvrir DBeaver et créer une nouvelle base**
 
 1. Lancez **DBeaver**  
 2. Cliquez sur **Nouvelle connexion** → **postgresqlL**
@@ -128,7 +128,7 @@ Télécharger script sql d’installation de Northwind ici :  [northwind.sql]({{
 4. Une fois connecté, faites clic droit sur Bases de données → **Créer Base de données**
 5. Nommez-la : `northwind`
 
-### 3. Exécuter le script
+**3. Exécuter le script**
 
 1. Faites clic droit sur la base `northwind` → **Outils → Execute script**
 2. Dans Input selectionner le fichier `northwind.sql`
@@ -136,7 +136,8 @@ Télécharger script sql d’installation de Northwind ici :  [northwind.sql]({{
 4. Cliquez sur **Démarrage**  
    → Les tables, vues et données seront automatiquement créées.
 
-## Sélection simple – SELECT et FROM
+## Requêtes SQL
+### Sélection simple – SELECT et FROM
 
 **SELECT** permet de choisir quelles colonnes afficher dans le résultat. C’est la commande de base pour interroger une table.\
 **FROM** indique la table dans laquelle chercher les données.
@@ -178,7 +179,7 @@ FROM Customers;
 
 ---
 
-## Filtrer les données – WHERE
+### Filtrer les données – WHERE
 
 Le mot-clé **WHERE** permet de limiter les résultats selon une ou plusieurs conditions.
 
@@ -241,7 +242,7 @@ WHERE Country IN ('USA', 'France', 'Germany');
 
 ---
 
-## Recherches textuelles – LIKE et ILIKE
+### Recherches textuelles – LIKE et ILIKE
 
 **LIKE** et **ILIKE** servent à filtrer les résultats sur du texte.
 
@@ -293,7 +294,7 @@ WHERE ProductName NOT ILIKE '%sauce%';
 
 ---
 
-## Trier les résultats – ORDER BY
+### Trier les résultats – ORDER BY
 
 **ORDER BY** classe les lignes selon un ou plusieurs critères.
 
@@ -325,7 +326,7 @@ ORDER BY UnitPrice ASC;
 
 ---
 
-## Renommer des colonnes et tables – AS
+### Renommer des colonnes et tables – AS
 
 Les alias rendent les requêtes plus lisibles, surtout lorsqu’on travaille avec plusieurs tables
 **AS** permet d’attribuer un alias à une colonne ou une table.
@@ -342,7 +343,7 @@ WHERE c.Country = 'France';
 
 ---
 
-## Jointures – Relier plusieurs tables avec JOIN
+### Jointures – Relier plusieurs tables avec JOIN
 
 Une jointure relie plusieurs tables entre elles à partir d’une clé commune, souvent une clé primaire et une clé étrangère.
 C’est ce qui permet de combiner plusieurs sources d’informations.
@@ -383,7 +384,7 @@ LEFT JOIN Orders AS o
 
 ---
 
-## Fonctions d’agrégation
+### Fonctions d’agrégation
 
 Les **fonctions d’agrégation** calculent une valeur à partir d’un ensemble de lignes.
 Elles permettent de résumer les données : compter, additionner, ou calculer une moyenne.
@@ -432,7 +433,7 @@ FROM OrderDetails;
 
 ---
 
-## Regrouper les résultats – GROUP BY
+### Regrouper les résultats – GROUP BY
 
 **GROUP BY** regroupe les lignes par valeur de colonne.
 
@@ -450,7 +451,7 @@ GROUP BY Country;
 
 ---
 
-## Filtrer les groupes – HAVING
+### Filtrer les groupes – HAVING
 
 `HAVING` s’utilise après `GROUP BY` pour filtrer sur des valeurs agrégées.
 Contrairement à `WHERE`, il agit sur le résultat du regroupement.
@@ -468,7 +469,7 @@ HAVING COUNT(*) > 5;
 
 ---
 
-## Sous-requêtes – Requêtes imbriquées
+### Sous-requêtes – Requêtes imbriquées
 
 Une **sous-requête** est une requête placée à l’intérieur d’une autre.
 
@@ -489,7 +490,7 @@ WHERE UnitPrice > (
 
 ---
 
-## 11. Ordre logique d’exécution
+### Ordre logique d’exécution
 
 L’ordre dans lequel SQL exécute les clauses :
 
@@ -502,7 +503,7 @@ L’ordre dans lequel SQL exécute les clauses :
 
 ---
 
-## 12. Exercices pratiques
+## Exercices pratiques
 
 1. Lister les 10 produits les plus chers.
 2. Trouver les clients américains.
