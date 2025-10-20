@@ -1,554 +1,516 @@
-# SQL - Les bases
+# Cours SQL
 
-Télécharger le fichier contenant les données du festival -> [festival.zip]({{'datasets/festival.zip' | relative_url }})
+---
 
-## Sélection simple – `SELECT` et `FROM`
+## Objectif de cette section
 
-La commande `SELECT` est utilisée pour extraire des données d’une table.
-La commande `FROM` indique la table contenant les données.
+Dans cette section, nous allons apprendre les bases du langage SQL en travaillant sur la base de données **Northwind**, un jeu de données classique qui simule la gestion d’une petite entreprise de commerce international de produits alimentaires.
 
-### Afficher toutes les colonnes
+Nous verrons :
+- comment explorer les tables avec des requêtes simples (`SELECT`, `WHERE`, `ORDER BY`, etc.)
+- comment relier les tables entre elles (`JOIN`)
+- comment agréger les données (`COUNT`, `SUM`, `GROUP BY`, `HAVING`)
+- et comment utiliser des **sous-requêtes** pour des analyses plus avancées.
+
+---
+
+## Présentation de la base de données Northwind
+
+### Contexte
+
+La base **Northwind** représente une société fictive qui vend des produits alimentaires à travers le monde.  
+Elle contient les informations sur :
+- les **clients** (Customers),
+- les **commandes** (Orders),
+- les **produits** (Products),
+- les **catégories de produits** (Categories),
+- les **fournisseurs** (Suppliers),
+- les **employés** (Employees),
+- et les **transporteurs** (Shippers).
+
+
+---
+
+### Tables principales
+
+**Customers**  
+Contient les informations sur les clients.
+- `CustomerID` → identifiant unique du client  
+- `CompanyName` → nom de l’entreprise  
+- `ContactName` → nom du contact principal  
+- `ContactTitle` → fonction du contact  
+- `Address`, `City`, `Region`, `PostalCode`, `Country`  
+- `Phone`, `Fax`
+
+---
+
+**Orders**  
+Contient les commandes passées par les clients.
+- `OrderID` → identifiant unique de la commande  
+- `CustomerID` → identifiant du client (`Customers.CustomerID`)  
+- `EmployeeID` → identifiant de l’employé responsable  
+- `OrderDate`, `RequiredDate`, `ShippedDate`  
+- `ShipVia` → identifiant du transporteur (`Shippers.ShipperID`)  
+- `Freight` → coût du transport  
+- `ShipName`, `ShipAddress`, `ShipCity`, `ShipCountry`
+
+---
+
+**OrderDetails** (ou `Order_Details`)  
+Détaille les produits contenus dans chaque commande.
+- `OrderID` → clé étrangère vers `Orders`  
+- `ProductID` → clé étrangère vers `Products`  
+- `UnitPrice` → prix unitaire  
+- `Quantity` → quantité commandée  
+- `Discount` → remise appliquée
+
+---
+
+**Products**  
+Liste les produits vendus.
+- `ProductID` → identifiant du produit  
+- `ProductName` → nom du produit  
+- `SupplierID` → clé étrangère vers `Suppliers`  
+- `CategoryID` → clé étrangère vers `Categories`  
+- `QuantityPerUnit` → conditionnement  
+- `UnitPrice` → prix unitaire  
+- `UnitsInStock`, `UnitsOnOrder`  
+- `Discontinued` → indique si le produit est encore vendu
+
+---
+
+**Categories**  
+Regroupe les produits par type.
+- `CategoryID` → identifiant unique  
+- `CategoryName` → nom de la catégorie (ex : Beverages, Seafood)  
+- `Description`
+
+---
+
+**Suppliers**  
+Liste les fournisseurs.
+- `SupplierID` → identifiant unique  
+- `CompanyName`, `ContactName`, `ContactTitle`  
+- `Address`, `City`, `Country`, `Phone`
+
+---
+
+**Employees**  
+Contient les informations sur les employés de Northwind.
+- `EmployeeID` → identifiant unique  
+- `LastName`, `FirstName`, `Title`  
+- `ReportsTo` → identifiant du supérieur hiérarchique  
+- `HireDate`, `BirthDate`, `Country`, `City`
+
+---
+
+**Shippers**  
+Contient les transporteurs utilisés pour les livraisons.
+- `ShipperID` → identifiant unique  
+- `CompanyName`  
+- `Phone`
+
+---
+
+## Schéma simplifié des relations
+
+## Installation de la base Northwind sur PostgreSQL avec DBeaver
+
+### 1. Télécharger le script SQL
+
+Télécharger script sql d’installation de Northwind ici :  [northwind.sql]({{ '/datasets/northwind.sql' | relative_url }})
+
+### 2. Ouvrir DBeaver et créer une nouvelle base
+
+1. Lancez **DBeaver**  
+2. Cliquez sur **Nouvelle connexion** → **postgresqlL**
+3. Connectez-vous à votre serveur local
+4. Une fois connecté, faites clic droit sur Bases de données → **Créer Base de données**
+5. Nommez-la : `northwind`
+
+### 3. Exécuter le script
+
+1. Faites clic droit sur la base `northwind` → **Outils → Execute script**
+2. Dans Input selectionner le fichier `northwind.sql`
+3. Cliquez sur **Suivant**
+4. Cliquez sur **Démarrage**  
+   → Les tables, vues et données seront automatiquement créées.
+
+## Sélection simple – SELECT et FROM
+
+**SELECT** permet de choisir quelles colonnes afficher dans le résultat. C’est la commande de base pour interroger une table.\
+**FROM** indique la table dans laquelle chercher les données.
+
+**Afficher toutes les colonnes**
+
 ```sql
 SELECT *
-FROM artistes;
+FROM Customers;
 ```
 
-Le caractère * signifie toutes les colonnes.
+
+→ `*` signifie “toutes les colonnes”.
 
 ---
 
-### Afficher certaines colonnes
+**Afficher certaines colonnes**
+
 ```sql
-SELECT 
-    nom,
-    style_musical
-FROM artistes;
+SELECT
+    CompanyName,
+    Country
+FROM Customers;
 ```
-Ici, seules les colonnes `nom` et `style_musical` sont affichées.
+
+→ Ici, seules les colonnes **CompanyName** et **Country** sont affichées.
 
 ---
 
-### Supprimer les doublons avec `DISTINCT`
+**Supprimer les doublons**
+
 ```sql
 SELECT DISTINCT
-    style_musical
-FROM artistes;
+    Country
+FROM Customers;
 ```
-`DISTINCT` permet d’afficher une seule fois chaque valeur unique.
+
+→ `DISTINCT` supprime les valeurs répétées.
 
 ---
 
-## Filtrer les données – `WHERE`
+## Filtrer les données – WHERE
 
-La clause `WHERE` permet de **filtrer** les lignes selon une ou plusieurs conditions.
+Le mot-clé **WHERE** permet de limiter les résultats selon une ou plusieurs conditions.
 
-### Exemple 1 : égalité
-```sql
-SELECT *
-FROM artistes
-WHERE pays = 'USA';
-```
-
----
-
-### Exemple 2 : différent de
-```sql
-SELECT *
-FROM artistes
-WHERE pays <> 'France';
-```
-`<>` est la forme standard SQL pour “différent de”.  
-`!=` fonctionne également en PostgreSQL.
-
----
-
-### Exemple 3 : plusieurs conditions avec `AND` et `OR`
-```sql
-SELECT *
-FROM artistes
-WHERE style_musical = 'Jazz'
-  AND pays = 'France';
-```
-L’artiste doit être **à la fois** Jazz **et** Français.
+**Égalité**
 
 ```sql
 SELECT *
-FROM artistes
-WHERE pays = 'USA' OR pays = 'France';
+FROM Customers
+WHERE Country = 'USA';
 ```
-L’artiste peut venir **de l’un ou de l’autre**.
+
+→ `=` vérifie que la valeur d’une colonne correspond exactement à la valeur indiquée.
 
 ---
 
-### Exemple 4 : liste de valeurs avec `IN`
-```sql
-SELECT *
-FROM artistes
-WHERE pays IN ('USA', 'France');
-```
-C’est une manière plus lisible d’écrire plusieurs conditions `OR`.
-
----
-
-## 3. Recherches textuelles – `LIKE` et `ILIKE`
-
-### Exemple 1 : commence par une lettre
-```sql
-SELECT *
-FROM artistes
-WHERE nom LIKE 'D%';
-```
-`%` représente **n’importe quelle suite de caractères**.  
-Ici : tous les artistes dont le nom **commence par D**.
-
----
-
-### Exemple 2 : se termine par une lettre
-```sql
-SELECT *
-FROM artistes
-WHERE nom LIKE '%s';
-```
-Tous les artistes dont le nom **se termine par s**.
-
----
-
-### Exemple 3 : contient un mot
-```sql
-SELECT *
-FROM artistes
-WHERE style_musical LIKE '%Jazz%';
-```
-
----
-
-### Exemple 4 : insensible à la casse avec `ILIKE` (PostgreSQL)
-```sql
-SELECT *
-FROM artistes
-WHERE style_musical ILIKE '%jazz%';
-```
-`ILIKE` ignore la casse (`Jazz`, `JAZZ`, `jazz`…).
-
----
-
-### Exemple 5 : exclure un mot
-```sql
-SELECT *
-FROM artistes
-WHERE style_musical NOT ILIKE '%jazz%';
-```
-
----
-
-## 4. Combiner plusieurs filtres
+**Différent de**
 
 ```sql
 SELECT *
-FROM artistes
-WHERE style_musical ILIKE '%jazz%'
-  AND (pays = 'USA' OR pays = 'France');
+FROM Customers
+WHERE Country <> 'France';
 ```
-Cette requête affiche les artistes jouant du Jazz **et** venant des États-Unis ou de France.
+
+→ `<>` est la forme standard SQL pour “différent de”.\
+→ `!=` fonctionne aussi, mais `<>` est plus conventionnel.
 
 ---
 
-## 5. Alias de tables et de colonnes
+Plusieurs conditions avec **AND** et **OR** :
 
-Les **alias** rendent les requêtes plus lisibles, surtout lorsqu’on travaille avec plusieurs tables.
-
-```sql
-SELECT 
-    a.nom,
-    a.pays
-FROM artistes AS a
-WHERE a.pays ILIKE '%inde%';
-```
-L’alias `a` remplace temporairement `artistes` pour alléger la syntaxe.
-
----
-
-## 6. Trier les résultats – `ORDER BY`
-
-### Exemple 1 : tri alphabétique
 ```sql
 SELECT *
-FROM artistes
-ORDER BY style_musical;
+FROM Products
+WHERE UnitPrice > 20
+  AND Discontinued = 0;
 ```
 
----
+→ `AND` signifie que les deux conditions doivent être vraies.
 
-### Exemple 2 : tri explicite ascendant
 ```sql
 SELECT *
-FROM artistes
-ORDER BY style_musical ASC;
+FROM Customers
+WHERE Country = 'USA'
+   OR Country = 'France';
 ```
+
+→ `OR` signifie qu’une seule des conditions suffit.
 
 ---
 
-### Exemple 3 : tri descendant
+Utiliser **IN** pour simplifier plusieurs OR :
+
 ```sql
 SELECT *
-FROM artistes
-ORDER BY style_musical DESC;
+FROM Suppliers
+WHERE Country IN ('USA', 'France', 'Germany');
 ```
 
+→ `IN` vérifie si une valeur appartient à une liste.
 
 ---
 
-## 7. Jointures – `JOIN`
+## Recherches textuelles – LIKE et ILIKE
 
-Une **jointure** relie plusieurs tables entre elles à partir d’une **clé commune**, souvent une clé primaire et une clé étrangère.  
-C’est ce qui permet de combiner plusieurs sources d’informations (par exemple : un concert et la scène sur laquelle il a lieu).
+**LIKE** et **ILIKE** servent à filtrer les résultats sur du texte.
 
+Commence par :
+
+```sql
+SELECT *
+FROM Customers
+WHERE CompanyName LIKE 'A%';
+```
+
+→ `%` remplace n’importe quelle suite de caractères. Ici, les noms commençant par A.
 
 ---
 
-### Les types de jointures en SQL
+Contient un mot :
 
-Il existe plusieurs types de jointures, chacune avec un comportement spécifique :
+```sql
+SELECT *
+FROM Products
+WHERE ProductName LIKE '%Choco%';
+```
 
-#### 1. `INNER JOIN` – jointure interne  
-C’est le type de jointure le plus courant.  
-Elle ne garde que les lignes qui existent **dans les deux tables**.  
+→ Recherche les produits contenant “Choco” dans leur nom.
+
+---
+
+Insensible à la casse (**ILIKE**) :
+
+```sql
+SELECT *
+FROM Customers
+WHERE CompanyName ILIKE '%market%';
+```
+
+→ ILIKE ignore la différence entre majuscules et minuscules.
+
+---
+
+Exclure un mot :
+
+```sql
+SELECT *
+FROM Products
+WHERE ProductName NOT ILIKE '%sauce%';
+```
+
+→ `NOT` inverse la condition.
+
+---
+
+## Trier les résultats – ORDER BY
+
+**ORDER BY** classe les lignes selon un ou plusieurs critères.
+
+Tri par prix décroissant :
+
+```sql
+SELECT
+    ProductName,
+    UnitPrice
+FROM Products
+ORDER BY UnitPrice DESC;
+```
+
+→ `DESC` signifie décroissant.
+
+---
+
+Tri croissant (par défaut) :
+
+```sql
+SELECT
+    ProductName,
+    UnitPrice
+FROM Products
+ORDER BY UnitPrice ASC;
+```
+
+→ `ASC` signifie croissant.
+
+---
+
+## Renommer des colonnes et tables – AS
+
+Les alias rendent les requêtes plus lisibles, surtout lorsqu’on travaille avec plusieurs tables
+**AS** permet d’attribuer un alias à une colonne ou une table.
+
+```sql
+SELECT
+    c.CompanyName AS customer,
+    c.Country
+FROM Customers AS c
+WHERE c.Country = 'France';
+```
+
+→ `AS` renomme temporairement la colonne ou la table dans la requête.
+
+---
+
+## Jointures – Relier plusieurs tables avec JOIN
+
+Une jointure relie plusieurs tables entre elles à partir d’une clé commune, souvent une clé primaire et une clé étrangère.
+C’est ce qui permet de combiner plusieurs sources d’informations.
+
+**Jointure interne `INNER JOIN`**
+C’est le type de jointure le plus courant.
+Elle ne garde que les lignes qui existent dans les deux tables.
 Autrement dit : seules les correspondances sont affichées.
 
 ```sql
 SELECT
-    c.id_concert,
-    s.nom AS nom_scene
-FROM concerts AS c
-INNER JOIN scenes AS s
-    ON c.id_scene = s.id_scene;
+    o.OrderID,
+    c.CompanyName AS customer
+FROM Orders AS o
+INNER JOIN Customers AS c
+    ON o.CustomerID = c.CustomerID;
 ```
 
-Cette requête affiche uniquement les concerts **ayant une scène associée**.  
-Les concerts sans scène, ou les scènes sans concert, ne sont pas visibles.
+→ Retourne uniquement les lignes qui existent dans les deux tables.
 
 ---
 
-#### 2. `LEFT JOIN` – jointure externe gauche  
-Elle garde **toutes les lignes** de la table de gauche (celle indiquée avant `JOIN`),  
-et ajoute les données correspondantes de la table de droite lorsqu’elles existent.  
-S’il n’y a pas de correspondance, les valeurs de la table de droite sont remplacées par `NULL`.
+**Jointure externe gauche (`LEFT JOIN`)**
+Elle garde toutes les lignes de la table de gauche (celle indiquée avant JOIN),
+et ajoute les données correspondantes de la table de droite lorsqu’elles existent.
+S’il n’y a pas de correspondance, les valeurs de la table de droite sont remplacées par NULL.
 
 ```sql
 SELECT
-    p.nom,
-    a.role
-FROM personnels AS p
-LEFT JOIN assignations AS a
-    ON p.id_personnel = a.id_personnel;
+    c.CompanyName AS customer,
+    o.OrderID
+FROM Customers AS c
+LEFT JOIN Orders AS o
+    ON c.CustomerID = o.CustomerID;
 ```
 
-Cette requête affiche tous les membres du personnel,  
-y compris ceux **sans assignation** (leur rôle apparaîtra en `NULL`).
-
----
-
-#### 3. `RIGHT JOIN` – jointure externe droite  
-C’est l’inverse du `LEFT JOIN`.  
-Elle garde toutes les lignes de la table de droite et ajoute les données de la table de gauche quand elles existent.
-
-```sql
-SELECT
-    c.id_concert,
-    s.nom AS nom_scene
-FROM concerts AS c
-RIGHT JOIN scenes AS s
-    ON c.id_scene = s.id_scene;
-```
-
-Cette requête affiche toutes les scènes, même celles **sans concert prévu**.
-
----
-
-#### 4. `FULL OUTER JOIN` – jointure externe complète  
-Elle conserve **toutes les lignes** des deux tables, qu’il y ait ou non correspondance.  
-Les valeurs manquantes sont remplacées par `NULL`.
-
-```sql
-SELECT
-    a.nom AS artiste,
-    c.id_concert
-FROM artistes AS a
-FULL OUTER JOIN participations AS p
-    ON a.id_artiste = p.id_artiste
-FULL OUTER JOIN concerts AS c
-    ON p.id_concert = c.id_concert;
-```
-
-Cette requête affiche :
-- les artistes avec concert,  
-- les artistes sans concert,  
-- et les concerts sans artiste associé.
-
----
-
-#### 5. `CROSS JOIN` – produit cartésien  
-Ce type de jointure ne repose sur **aucune clé commune**.  
-Il associe **chaque ligne** de la première table avec **chaque ligne** de la seconde.  
-À utiliser avec précaution car le nombre de combinaisons peut être très élevé.
-
-```sql
-SELECT
-    a.nom AS artiste,
-    s.nom AS scene
-FROM artistes AS a
-CROSS JOIN scenes AS s;
-```
-
-Chaque artiste est associé à **toutes les scènes** du festival.  
-Cela peut servir pour générer des combinaisons possibles ou des tests.
-
----
-
-## Exercices
-
-- Afficher toutes les colonnes et valeur de la table `festivaliers`
-- Affficher uniquement les colonnes **nom** et **prénom** de la table `personnels`
-- Afficher uniquement les **noms** et **pays** des `artistes`
-- Afficher uniquement les **noms** de scènes et leur **capacité d'accueil**
-- Afficher uniquement le **nom** des `artistes` et leur **style musical** et renomme **nom** en **artiste** et **style_musical** en **style**
-- Afficher tous les artistes venant strictement des USA
-- Afficher tous les artistes ne venant pas strictement des USA
-- Afficher tous les artistes dont le style musical est strictement 'Jazz'
-- Afficher tous les artistes donc le style musical n'est pas strictement 'Jazz'
-- Afficher tous les concerts commençant à 20h00
-- Afficher tous les concerts commençant avant 20h00 (non inclus)
-- Afficher tous les artistes commençant par la lettre 's'
-- Afficher tous les concerts ayant lieu entre le 30/08/2025 (inclus) et le 02/09/2025 (inclus)
-- Afficher tous les artistes ne venant pas strictement des USA et ayant strictement le mot 'Jazz' dans leur style musical
-- Afficher tous les artistes venant au moins en partie des USA et ayant le mot 'jazz' (peu importe la manière dont il est écrit) dans leur style musical
-- Afficher tous les artistes venant de France et commençant par la lettre 'a' ou bien par la lettre 'b'
-- Afficher tous les artistes ne venant ni de France ni des USA
+→ Garde tous les clients, même ceux sans commande (les colonnes d’Orders vaudront NULL).
 
 ---
 
 ## Fonctions d’agrégation
 
-Les **fonctions d’agrégation** calculent une valeur à partir d’un ensemble de lignes.  
+Les **fonctions d’agrégation** calculent une valeur à partir d’un ensemble de lignes.
 Elles permettent de résumer les données : compter, additionner, ou calculer une moyenne.
 
 Principales fonctions :
-- `COUNT()` → compte le nombre de lignes  
-- `SUM()` → fait la somme  
-- `AVG()` → calcule la moyenne  
-- `MIN()` → renvoie la plus petite valeur  
-- `MAX()` → renvoie la plus grande valeur  
+
+    `COUNT()` → compte le nombre de lignes
+    `SUM()` → fait la somme
+    `AVG()` → calcule la moyenne
+    `MIN()` → renvoie la plus petite valeur
+    `MAX()` → renvoie la plus grande valeur
+
 
 ---
 
-### Exemple 1 – Compter le nombre d’artistes
-```sql
-SELECT COUNT(*) AS nb_artistes
-FROM artistes;
-```
-Retourne le nombre total d’artistes.
+Compter :
 
----
-
-### Exemple 2 – Compter les artistes d’un pays donné
 ```sql
-SELECT COUNT(*) AS nb_artistes_fr
-FROM artistes
-WHERE pays = 'France';
+SELECT COUNT(*) AS nb_customers
+FROM Customers;
 ```
 
+→ `COUNT()` compte le nombre de lignes.
+
 ---
 
-### Exemple 3 – Capacité totale du festival
+Moyenne :
+
 ```sql
-SELECT SUM(capacite_accueil) AS capacite_totale
-FROM scenes;
+SELECT AVG(UnitPrice) AS avg_price
+FROM Products;
 ```
 
+→ `AVG()` calcule la moyenne.
+
 ---
 
-### Exemple 4 – Plus grande capacité
+Somme :
+
 ```sql
-SELECT MAX(capacite_accueil) AS plus_grande_scene
-FROM scenes;
+SELECT SUM(UnitPrice * Quantity) AS total_sales
+FROM OrderDetails;
 ```
 
+→ `SUM()` additionne les valeurs.
+
 ---
 
-### Exemple 5 – Capacité moyenne
+## Regrouper les résultats – GROUP BY
+
+**GROUP BY** regroupe les lignes par valeur de colonne.
+
+Nombre de clients par pays :
+
 ```sql
-SELECT AVG(capacite_accueil) AS capacite_moyenne
-FROM scenes;
+SELECT
+    Country,
+    COUNT(*) AS nb_customers
+FROM Customers
+GROUP BY Country;
 ```
 
----
-
-## Fonctions d’agrégation – avec `GROUP BY`
-
-La clause `GROUP BY` permet de **regrouper les lignes** selon une ou plusieurs colonnes,  
-et d’appliquer des fonctions d’agrégation sur chaque groupe.
+→ Chaque pays devient un groupe, et COUNT compte les clients de ce groupe.
 
 ---
 
-### Exemple 1 – Nombre d’artistes par pays
-```sql
-SELECT 
-    pays,
-    COUNT(*) AS nb_artistes
-FROM artistes
-GROUP BY pays;
-```
+## Filtrer les groupes – HAVING
 
----
-
-### Exemple 2 – Nombre d’artistes par style musical
-```sql
-SELECT 
-    style_musical,
-    COUNT(*) AS nb_artistes
-FROM artistes
-GROUP BY style_musical;
-```
-
----
-
-### Exemple 3 – Moyenne de capacité d’accueil par type de scène
-```sql
-SELECT 
-    type_scene,
-    AVG(capacite_accueil) AS capacite_moyenne
-FROM scenes
-GROUP BY type_scene;
-```
-
----
-
-### Exemple 4 – Groupement sur plusieurs colonnes
-```sql
-SELECT 
-    pays,
-    style_musical,
-    COUNT(*) AS nb_artistes
-FROM artistes
-GROUP BY pays, style_musical;
-```
-
----
-
-## Filtrer les groupes – `HAVING`
-
-`HAVING` s’utilise après `GROUP BY` pour filtrer sur des valeurs agrégées.  
+`HAVING` s’utilise après `GROUP BY` pour filtrer sur des valeurs agrégées.
 Contrairement à `WHERE`, il agit sur le résultat du regroupement.
 
----
-
-### Exemple 1 – Pays ayant plus de 5 artistes
 ```sql
-SELECT 
-    pays,
-    COUNT(*) AS nb_artistes
-FROM artistes
-GROUP BY pays
+SELECT
+    Country,
+    COUNT(*) AS nb_customers
+FROM Customers
+GROUP BY Country
 HAVING COUNT(*) > 5;
 ```
 
+→ Affiche uniquement les pays ayant plus de 5 clients.
+
 ---
 
-### Exemple 2 – Styles musicaux joués par plus de 3 artistes
+## Sous-requêtes – Requêtes imbriquées
+
+Une **sous-requête** est une requête placée à l’intérieur d’une autre.
+
+Produits plus chers que la moyenne :
+
 ```sql
-SELECT 
-    style_musical,
-    COUNT(*) AS nb_artistes
-FROM artistes
-GROUP BY style_musical
-HAVING COUNT(*) > 3;
-```
-
----
-
-### Exemple 3 – Moyenne de capacité supérieure à 500
-```sql
-SELECT 
-    type_scene,
-    AVG(capacite_accueil) AS capacite_moyenne
-FROM scenes
-GROUP BY type_scene
-HAVING AVG(capacite_accueil) > 500;
-```
-
----
-
-### Ordre logique d’exécution
-1. `FROM`  
-2. `WHERE`  
-3. `GROUP BY`  
-4. `HAVING`  
-5. `SELECT`  
-6. `ORDER BY`
-
----
-
-## Requêtes imbriquées (ou sous-requêtes)
-
-Une **requête imbriquée** est une requête placée à l’intérieur d’une autre.  
-Elles permettent d’effectuer des comparaisons ou des calculs plus complexes.
-
----
-
-### Exemple 1 – Trouver les artistes du pays le plus représenté
-```sql
-SELECT *
-FROM artistes
-WHERE pays = (
-    SELECT pays
-    FROM artistes
-    GROUP BY pays
-    ORDER BY COUNT(*) DESC
-    LIMIT 1
-);
-```
-La sous-requête identifie le pays ayant le plus d’artistes,  
-et la requête principale affiche les artistes de ce pays.
-
----
-
-### Exemple 2 – Trouver les scènes plus grandes que la moyenne
-```sql
-SELECT nom, capacite_accueil
-FROM scenes
-WHERE capacite_accueil > (
-    SELECT AVG(capacite_accueil)
-    FROM scenes
+SELECT
+    ProductName,
+    UnitPrice
+FROM Products
+WHERE UnitPrice > (
+    SELECT AVG(UnitPrice)
+    FROM Products
 );
 ```
 
----
-
-### Exemple 3 – Sous-requête dans le `FROM`
-```sql
-SELECT 
-    pays,
-    nb_artistes
-FROM (
-    SELECT 
-        pays,
-        COUNT(*) AS nb_artistes
-    FROM artistes
-    GROUP BY pays
-) AS stats
-WHERE nb_artistes > 5;
-```
+→ La sous-requête calcule le prix moyen, la requête principale affiche les produits supérieurs à cette moyenne.
 
 ---
 
-### Exemple 4 – Sous-requête avec `IN`
-```sql
-SELECT nom
-FROM artistes
-WHERE pays IN (
-    SELECT pays
-    FROM artistes
-    WHERE style_musical = 'Jazz'
-);
-```
-Affiche tous les artistes venant d’un pays où il existe au moins un artiste de Jazz.
+## 11. Ordre logique d’exécution
+
+L’ordre dans lequel SQL exécute les clauses :
+
+1. **FROM** – choisit la table ou la jointure.
+2. **WHERE** – filtre les lignes.
+3. **GROUP BY** – regroupe les lignes.
+4. **HAVING** – filtre les groupes.
+5. **SELECT** – affiche les colonnes demandées.
+6. **ORDER BY** – trie le résultat final.
+
+---
+
+## 12. Exercices pratiques
+
+1. Lister les 10 produits les plus chers.
+2. Trouver les clients américains.
+3. Compter le nombre de commandes par client.
+4. Calculer la valeur totale de chaque commande.
+5. Lister les produits vendus par chaque fournisseur.
+6. Trouver les catégories contenant plus de 5 produits.
+7. Identifier les clients ayant passé plus de 3 commandes.
+8. Calculer le prix moyen des produits par catégorie.
+9. Lister les employés ayant traité plus de 50 commandes.
+10. Trouver les pays où le nombre de clients dépasse la moyenne.
