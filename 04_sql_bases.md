@@ -33,82 +33,179 @@ Elle contient les informations sur :
 
 ### Tables principales
 
-**Customers**  
-Contient les informations sur les clients.
-- `CustomerID` → identifiant unique du client  
-- `CompanyName` → nom de l’entreprise  
-- `ContactName` → nom du contact principal  
-- `ContactTitle` → fonction du contact  
-- `Address`, `City`, `Region`, `PostalCode`, `Country`  
-- `Phone`, `Fax`
+`customers`
+
+Contient les informations sur les clients de l’entreprise.
+
+- **customer_id** : identifiant unique du client (clé primaire).  
+- **company_name** : nom de l’entreprise cliente.  
+- **contact_name** : nom du contact principal.  
+- **contact_title** : fonction du contact.  
+- **address** : adresse complète du client.  
+- **city** : ville où se situe le client.  
+- **region** : région ou état, selon le pays.  
+- **postal_code** : code postal du client.  
+- **country** : pays du client.  
+- **phone** : numéro de téléphone principal.  
+- **fax** : numéro de fax.
 
 ---
 
-**Orders**  
-Contient les commandes passées par les clients.
-- `OrderID` → identifiant unique de la commande  
-- `CustomerID` → identifiant du client (`Customers.CustomerID`)  
-- `EmployeeID` → identifiant de l’employé responsable  
-- `OrderDate`, `RequiredDate`, `ShippedDate`  
-- `ShipVia` → identifiant du transporteur (`Shippers.ShipperID`)  
-- `Freight` → coût du transport  
-- `ShipName`, `ShipAddress`, `ShipCity`, `ShipCountry`
+`orders`
+
+Contient les commandes passées par les clients et suivies par un employé.
+
+- **order_id** : identifiant unique de la commande (clé primaire).  
+- **customer_id** : référence au client ayant passé la commande (`customers.customer_id`).  
+- **employee_id** : référence à l’employé responsable (`employees.employee_id`).  
+- **order_date** : date de création de la commande.  
+- **required_date** : date à laquelle la livraison est demandée.  
+- **shipped_date** : date d’expédition réelle.  
+- **ship_via** : identifiant du transporteur (`shippers.shipper_id`).  
+- **freight** : coût du transport.  
+- **ship_name** : nom du destinataire (souvent le client ou un entrepôt).  
+- **ship_address** : adresse de livraison.  
+- **ship_city** : ville de livraison.  
+- **ship_region** : région ou état de livraison.  
+- **ship_postal_code** : code postal de livraison.  
+- **ship_country** : pays de livraison.
 
 ---
 
-**Order_Details**
-Détaille les produits contenus dans chaque commande.
-- `OrderID` → clé étrangère vers `Orders`  
-- `ProductID` → clé étrangère vers `Products`  
-- `UnitPrice` → prix unitaire  
-- `Quantity` → quantité commandée  
-- `Discount` → remise appliquée
+`products`
+
+Répertorie les produits vendus par Northwind.
+
+- **product_id** : identifiant unique du produit (clé primaire).  
+- **product_name** : nom du produit.  
+- **supplier_id** : identifiant du fournisseur (`suppliers.supplier_id`).  
+- **category_id** : identifiant de la catégorie (`categories.category_id`).  
+- **quantity_per_unit** : conditionnement du produit (ex. "24 - 12 oz bottles").  
+- **unit_price** : prix unitaire du produit.  
+- **units_in_stock** : quantité actuelle en stock.  
+- **units_on_order** : quantité actuellement en commande.  
+- **reorder_level** : seuil de réapprovisionnement.  
+- **discontinued** : indique si le produit est arrêté (booléen).
 
 ---
 
-**Products**  
-Liste les produits vendus.
-- `ProductID` → identifiant du produit  
-- `ProductName` → nom du produit  
-- `SupplierID` → clé étrangère vers `Suppliers`  
-- `CategoryID` → clé étrangère vers `Categories`  
-- `QuantityPerUnit` → conditionnement  
-- `UnitPrice` → prix unitaire  
-- `UnitsInStock`, `UnitsOnOrder`  
-- `Discontinued` → indique si le produit est encore vendu
+`order_details`
+
+Détaille les produits inclus dans chaque commande.
+
+- **order_id** : identifiant de la commande (`orders.order_id`).  
+- **product_id** : identifiant du produit (`products.product_id`).  
+- **unit_price** : prix unitaire du produit au moment de la commande.  
+- **quantity** : nombre d’unités commandées.  
+- **discount** : remise appliquée sur cette ligne (valeur entre 0 et 1).
+
+Chaque ligne représente un **produit spécifique** dans une commande donnée.
 
 ---
 
-**Categories**  
+`categories`
+
 Regroupe les produits par type.
-- `CategoryID` → identifiant unique  
-- `CategoryName` → nom de la catégorie (ex : Beverages, Seafood)  
-- `Description`
+
+- **category_id** : identifiant unique de la catégorie (clé primaire).  
+- **category_name** : nom de la catégorie (ex. Beverages, Seafood).  
+- **description** : description textuelle de la catégorie.  
+- **picture** : image de la catégorie (binaire).
 
 ---
 
-**Suppliers**  
-Liste les fournisseurs.
-- `SupplierID` → identifiant unique  
-- `CompanyName`, `ContactName`, `ContactTitle`  
-- `Address`, `City`, `Country`, `Phone`
+`suppliers`
+
+Liste les fournisseurs des produits.
+
+- **supplier_id** : identifiant unique du fournisseur (clé primaire).  
+- **company_name** : nom de l’entreprise fournisseur.  
+- **contact_name** : nom du contact principal.  
+- **contact_title** : fonction du contact.  
+- **address** : adresse complète du fournisseur.  
+- **city** : ville du fournisseur.  
+- **region** : région ou état.  
+- **postal_code** : code postal.  
+- **country** : pays du fournisseur.  
+- **phone** : numéro de téléphone.  
+- **fax** : numéro de fax.  
+- **homepage** : site web ou page de présentation.
 
 ---
 
-**Employees**  
-Contient les informations sur les employés de Northwind.
-- `EmployeeID` → identifiant unique  
-- `LastName`, `FirstName`, `Title`  
-- `ReportsTo` → identifiant du supérieur hiérarchique  
-- `HireDate`, `BirthDate`, `Country`, `City`
+`employees`
+
+Contient les informations sur les employés.
+
+- **employee_id** : identifiant unique de l’employé (clé primaire).  
+- **last_name** : nom de famille de l’employé.  
+- **first_name** : prénom de l’employé.  
+- **title** : intitulé du poste (ex. Sales Representative).  
+- **title_of_courtesy** : civilité (Mr., Mrs., Dr., etc.).  
+- **birth_date** : date de naissance.  
+- **hire_date** : date d’embauche.  
+- **address** : adresse personnelle.  
+- **city** : ville de résidence.  
+- **region** : région ou état.  
+- **postal_code** : code postal.  
+- **country** : pays.  
+- **home_phone** : numéro de téléphone personnel.  
+- **extension** : extension téléphonique interne.  
+- **photo** : photo de l’employé (binaire).  
+- **notes** : remarques ou informations complémentaires.  
+- **reports_to** : identifiant du supérieur hiérarchique (`employees.employee_id`).  
+- **photo_path** : chemin vers la photo.
 
 ---
 
-**Shippers**  
-Contient les transporteurs utilisés pour les livraisons.
-- `ShipperID` → identifiant unique  
-- `CompanyName`  
-- `Phone`
+`shippers`
+
+Contient les transporteurs utilisés pour la livraison.
+
+- **shipper_id** : identifiant unique du transporteur (clé primaire).  
+- **company_name** : nom de la société de transport.  
+- **phone** : numéro de téléphone du transporteur.
+
+---
+
+`territories`
+
+Zones géographiques couvertes par les employés.
+
+- **territory_id** : identifiant unique du territoire (clé primaire).  
+- **territory_description** : description du territoire.  
+- **region_id** : référence vers la région correspondante (`region.region_id`).
+
+---
+
+`region`
+
+Regroupe plusieurs territoires.
+
+- **region_id** : identifiant unique de la région (clé primaire).  
+- **region_description** : description textuelle (ex. "Eastern", "Western").
+
+---
+
+`employee_territories`
+
+Table de jonction entre employés et territoires.
+
+- **employee_id** : identifiant de l’employé (`employees.employee_id`).  
+- **territory_id** : identifiant du territoire (`territories.territory_id`).
+
+Chaque ligne indique qu’un employé est responsable d’un territoire donné.
+
+---
+
+`us_states`
+
+Référentiel des États américains.
+
+- **state_id** : identifiant unique de l’État (clé primaire).  
+- **state_name** : nom complet de l’État.  
+- **state_abbr** : abréviation (ex. CA pour California).  
+- **state_region** : région géographique (ex. West, Midwest).
 
 ---
 
@@ -588,3 +685,7 @@ Cela permet d’ajouter dynamiquement une information agrégée sans passer par 
 5. **SELECT** – sélection des colonnes
 6. **ORDER BY** – tri final
 7. **LIMIT** – restriction du nombre de lignes
+
+### Exercices
+
+Télécharger le script sql contenant la liste d'exercice :  [northwind_queries.sql]({{ 'northwind_queries.sql' | relative_url }})
