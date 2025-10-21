@@ -14,7 +14,7 @@ Nous verrons :
 
 ---
 
-## Présentation de la base de données Northwind
+## Base de données Northwind
 
 ### Contexte
 
@@ -56,7 +56,7 @@ Contient les commandes passées par les clients.
 
 ---
 
-**OrderDetails** (ou `Order_Details`)  
+**Order_Details**
 Détaille les produits contenus dans chaque commande.
 - `OrderID` → clé étrangère vers `Orders`  
 - `ProductID` → clé étrangère vers `Products`  
@@ -114,6 +114,8 @@ Contient les transporteurs utilisés pour les livraisons.
 
 ### Schéma simplifié des relations
 
+![Schema Northwind](figures\ER_northwind.png)
+
 ### Installation de la base Northwind sur PostgreSQL avec DBeaver
 
 **1. Télécharger le script SQL**
@@ -137,381 +139,452 @@ Télécharger script sql d’installation de Northwind ici :  [northwind.sql]({{
    → Les tables, vues et données seront automatiquement créées.
 
 ## Requêtes SQL
-### Sélection simple – SELECT et FROM
+### Afficher toutes les colonnes d'une table (SELECT, FROM)
 
-**SELECT** permet de choisir quelles colonnes afficher dans le résultat. C’est la commande de base pour interroger une table.\
-**FROM** indique la table dans laquelle chercher les données.
+Le mot-clé **SELECT** permet de choisir quelles colonnes afficher, tandis que **FROM** indique la table à interroger.
 
-**Afficher toutes les colonnes**
+Afficher tous les clients enregistrés :
 
 ```sql
 SELECT *
-FROM Customers;
+FROM customers;
 ```
 
-
-→ `*` signifie “toutes les colonnes”.
+`*` signifie « toutes les colonnes ».
 
 ---
 
-**Afficher certaines colonnes**
+### Afficher certaines colonnes
+
+Afficher uniquement le nom de l'entreprise et le pays :
 
 ```sql
 SELECT
-    CompanyName,
-    Country
-FROM Customers;
+    company_name,
+    country
+FROM customers;
 ```
-
-→ Ici, seules les colonnes **CompanyName** et **Country** sont affichées.
 
 ---
 
-**Supprimer les doublons**
+### Supprimer les doublons (DISTINCT)
+
+Le mot-clé **DISTINCT** permet d'afficher uniquement les valeurs uniques d'une colonne.
+
+Lister les pays uniques où vivent les clients :
 
 ```sql
-SELECT DISTINCT
-    Country
-FROM Customers;
+SELECT DISTINCT country
+FROM customers;
 ```
-
-→ `DISTINCT` supprime les valeurs répétées.
 
 ---
 
-### Filtrer les données – WHERE
+### Filtrer les données avec WHERE
 
-Le mot-clé **WHERE** permet de limiter les résultats selon une ou plusieurs conditions.
+#### Condition d'égalité (=)
 
-**Égalité**
-
-```sql
-SELECT *
-FROM Customers
-WHERE Country = 'USA';
-```
-
-→ `=` vérifie que la valeur d’une colonne correspond exactement à la valeur indiquée.
-
----
-
-**Différent de**
+Afficher les clients dont le pays est exactement « USA » :
 
 ```sql
 SELECT *
-FROM Customers
-WHERE Country <> 'France';
+FROM customers
+WHERE country = 'USA';
 ```
 
-→ `<>` est la forme standard SQL pour “différent de”.\
-→ `!=` fonctionne aussi, mais `<>` est plus conventionnel.
+`=` vérifie l'égalité.
 
 ---
 
-Plusieurs conditions avec **AND** et **OR** :
+#### Différence (<> ou !=)
+
+Afficher les clients qui ne sont **pas** en France :
 
 ```sql
 SELECT *
-FROM Products
-WHERE UnitPrice > 20
-  AND Discontinued = 0;
+FROM customers
+WHERE country <> 'France';
 ```
 
-→ `AND` signifie que les deux conditions doivent être vraies.
-
-```sql
-SELECT *
-FROM Customers
-WHERE Country = 'USA'
-   OR Country = 'France';
-```
-
-→ `OR` signifie qu’une seule des conditions suffit.
+`<>` est la syntaxe standard SQL pour « différent de ».\
+`!=` fonctionne aussi en PostgreSQL.
 
 ---
 
-Utiliser **IN** pour simplifier plusieurs OR :
+#### Combiner des conditions (AND / OR)
+
+- **AND** : les deux conditions doivent être vraies.
+- **OR** : au moins une des conditions doit être vraie.
+
+Lister les produits dont le prix est supérieur à 20 et toujours en vente :
 
 ```sql
 SELECT *
-FROM Suppliers
-WHERE Country IN ('USA', 'France', 'Germany');
+FROM products
+WHERE unit_price > 20
+  AND discontinued = 0;
 ```
 
-→ `IN` vérifie si une valeur appartient à une liste.
-
----
-
-### Recherches textuelles – LIKE et ILIKE
-
-**LIKE** et **ILIKE** servent à filtrer les résultats sur du texte.
-
-Commence par :
+Lister les clients situés aux USA ou en France :
 
 ```sql
 SELECT *
-FROM Customers
-WHERE CompanyName LIKE 'A%';
+FROM customers
+WHERE country = 'USA'
+   OR country = 'France';
 ```
-
-→ `%` remplace n’importe quelle suite de caractères. Ici, les noms commençant par A.
 
 ---
 
-Contient un mot :
+#### Appartenir à une liste (IN)
+
+Le mot-clé **IN** permet de vérifier si une valeur fait partie d'une liste.
+
+Lister les fournisseurs américains, français ou allemands :
 
 ```sql
 SELECT *
-FROM Products
-WHERE ProductName LIKE '%Choco%';
+FROM suppliers
+WHERE country IN ('USA', 'France', 'Germany');
 ```
-
-→ Recherche les produits contenant “Choco” dans leur nom.
 
 ---
 
-Insensible à la casse (**ILIKE**) :
+#### Recherches textuelles (LIKE / ILIKE)
+
+- **LIKE** cherche un motif exact, sensible à la casse.
+- **ILIKE** fait la même recherche, mais sans tenir compte des majuscules/minuscules.
+
+Le symbole `%` remplace une suite de caractères quelconques.
+
+Lister les clients dont le nom commence par la lettre A :
 
 ```sql
 SELECT *
-FROM Customers
-WHERE CompanyName ILIKE '%market%';
+FROM customers
+WHERE company_name LIKE 'A%';
 ```
 
-→ ILIKE ignore la différence entre majuscules et minuscules.
-
----
-
-Exclure un mot :
+Lister les produits contenant le mot "choco" (insensible à la casse) :
 
 ```sql
 SELECT *
-FROM Products
-WHERE ProductName NOT ILIKE '%sauce%';
+FROM products
+WHERE product_name ILIKE '%choco%';
 ```
 
-→ `NOT` inverse la condition.
+Exclure les produits contenant le mot "sauce" :
+
+```sql
+SELECT *
+FROM products
+WHERE product_name NOT ILIKE '%sauce%';
+```
 
 ---
 
-### Trier les résultats – ORDER BY
+#### Intervalle de valeurs (BETWEEN)
 
-**ORDER BY** classe les lignes selon un ou plusieurs critères.
+Le mot-clé **BETWEEN** s'utilise pour filtrer une valeur comprise entre deux bornes inclusives.
 
-Tri par prix décroissant :
+Afficher les produits dont le prix est compris entre 10 et 20 :
+
+```sql
+SELECT *
+FROM products
+WHERE unit_price BETWEEN 10 AND 20;
+```
+
+---
+
+### Limiter le nombre de résultats (LIMIT)
+
+**LIMIT** permet de restreindre le nombre de lignes retournées.
+
+Afficher les 5 premiers produits :
+
+```sql
+SELECT *
+FROM products
+LIMIT 5;
+```
+
+---
+
+### Trier les résultats (ORDER BY)
+
+**ORDER BY** trie les résultats selon une ou plusieurs colonnes.\
+Par défaut le tri est croissant (`ASC`), mais on peut aussi utiliser `DESC` pour décroissant.
+
+Trier les produits par prix unitaire décroissant :
+
+```sql
+SELECT product_name, unit_price
+FROM products
+ORDER BY unit_price DESC;
+```
+
+---
+
+### Renommer les colonnes et tables avec un alias (AS)
+
+Le mot-clé **AS** sert à renommer temporairement une table ou une colonne pour améliorer la lisibilité.
+
+Afficher les clients français avec alias :
 
 ```sql
 SELECT
-    ProductName,
-    UnitPrice
-FROM Products
-ORDER BY UnitPrice DESC;
+    c.company_name AS client,
+    c.country AS pays
+FROM customers AS c
+WHERE c.country = 'France';
 ```
-
-→ `DESC` signifie décroissant.
 
 ---
 
-Tri croissant (par défaut) :
+### Jointures entre tables (JOIN)
+
+Les jointures permettent de combiner plusieurs tables selon une relation logique (généralement une clé étrangère).
+
+#### INNER JOIN
+
+**INNER JOIN** retourne uniquement les lignes qui ont une correspondance dans les deux tables.
+
+Lister les commandes avec le nom du client :
 
 ```sql
 SELECT
-    ProductName,
-    UnitPrice
-FROM Products
-ORDER BY UnitPrice ASC;
+    o.order_id,
+    c.company_name AS client
+FROM orders AS o
+INNER JOIN customers AS c
+    ON o.customer_id = c.customer_id;
 ```
-
-→ `ASC` signifie croissant.
 
 ---
 
-### Renommer des colonnes et tables – AS
+#### LEFT JOIN
 
-Les alias rendent les requêtes plus lisibles, surtout lorsqu’on travaille avec plusieurs tables
-**AS** permet d’attribuer un alias à une colonne ou une table.
+**LEFT JOIN** garde toutes les lignes de la table de gauche, et ajoute les données correspondantes de la table de droite s'il y en a. Sinon, les valeurs à droite sont `NULL`.
+
+Lister tous les clients, même ceux sans commande :
 
 ```sql
 SELECT
-    c.CompanyName AS customer,
-    c.Country
-FROM Customers AS c
-WHERE c.Country = 'France';
+    c.company_name AS client,
+    o.order_id
+FROM customers AS c
+LEFT JOIN orders AS o
+    ON c.customer_id = o.customer_id;
 ```
-
-→ `AS` renomme temporairement la colonne ou la table dans la requête.
 
 ---
 
-### Jointures – Relier plusieurs tables avec JOIN
+#### RIGHT JOIN et FULL OUTER JOIN
 
-Une jointure relie plusieurs tables entre elles à partir d’une clé commune, souvent une clé primaire et une clé étrangère.
-C’est ce qui permet de combiner plusieurs sources d’informations.
+- **RIGHT JOIN** fait l'inverse du `LEFT JOIN` : garde toutes les lignes de la table de droite.
+- **FULL OUTER JOIN** combine toutes les lignes des deux tables, qu'il y ait correspondance ou non.
 
-**Jointure interne `INNER JOIN`**
-C’est le type de jointure le plus courant.
-Elle ne garde que les lignes qui existent dans les deux tables.
-Autrement dit : seules les correspondances sont affichées.
+Exemple :
 
 ```sql
 SELECT
-    o.OrderID,
-    c.CompanyName AS customer
-FROM Orders AS o
-INNER JOIN Customers AS c
-    ON o.CustomerID = c.CustomerID;
+    c.company_name,
+    o.order_id
+FROM customers AS c
+FULL OUTER JOIN orders AS o
+    ON c.customer_id = o.customer_id;
 ```
-
-→ Retourne uniquement les lignes qui existent dans les deux tables.
 
 ---
 
-**Jointure externe gauche (`LEFT JOIN`)**
-Elle garde toutes les lignes de la table de gauche (celle indiquée avant JOIN),
-et ajoute les données correspondantes de la table de droite lorsqu’elles existent.
-S’il n’y a pas de correspondance, les valeurs de la table de droite sont remplacées par NULL.
+### Fonctions d'agrégation et regroupements
+
+#### Fonctions principales
+
+Les fonctions d'agrégation résument un ensemble de lignes :
+
+- **COUNT()** compte le nombre de lignes,
+- **SUM()** fait la somme,
+- **AVG()** calcule la moyenne,
+- **MIN() / MAX()** trouvent les valeurs extrêmes.
+
+Exemples :
 
 ```sql
-SELECT
-    c.CompanyName AS customer,
-    o.OrderID
-FROM Customers AS c
-LEFT JOIN Orders AS o
-    ON c.CustomerID = o.CustomerID;
+SELECT COUNT(*) AS nb_customers FROM customers;
+SELECT AVG(unit_price) AS avg_price FROM products;
+SELECT SUM(unit_price * quantity) AS total_sales FROM order_details;
 ```
 
-→ Garde tous les clients, même ceux sans commande (les colonnes d’Orders vaudront NULL).
-
 ---
 
-### Fonctions d’agrégation
+#### Regrouper les résultats (GROUP BY)
 
-Les **fonctions d’agrégation** calculent une valeur à partir d’un ensemble de lignes.
-Elles permettent de résumer les données : compter, additionner, ou calculer une moyenne.
-
-Principales fonctions :
-
-    `COUNT()` → compte le nombre de lignes
-    `SUM()` → fait la somme
-    `AVG()` → calcule la moyenne
-    `MIN()` → renvoie la plus petite valeur
-    `MAX()` → renvoie la plus grande valeur
-
-
----
-
-Compter :
-
-```sql
-SELECT COUNT(*) AS nb_customers
-FROM Customers;
-```
-
-→ `COUNT()` compte le nombre de lignes.
-
----
-
-Moyenne :
-
-```sql
-SELECT AVG(UnitPrice) AS avg_price
-FROM Products;
-```
-
-→ `AVG()` calcule la moyenne.
-
----
-
-Somme :
-
-```sql
-SELECT SUM(UnitPrice * Quantity) AS total_sales
-FROM OrderDetails;
-```
-
-→ `SUM()` additionne les valeurs.
-
----
-
-### Regrouper les résultats – GROUP BY
-
-**GROUP BY** regroupe les lignes par valeur de colonne.
+**GROUP BY** regroupe les lignes ayant une même valeur pour une colonne.
 
 Nombre de clients par pays :
 
 ```sql
 SELECT
-    Country,
+    country,
     COUNT(*) AS nb_customers
-FROM Customers
-GROUP BY Country;
+FROM customers
+GROUP BY country;
 ```
-
-→ Chaque pays devient un groupe, et COUNT compte les clients de ce groupe.
 
 ---
 
-### Filtrer les groupes – HAVING
+#### Filtrer les groupes (HAVING)
 
-`HAVING` s’utilise après `GROUP BY` pour filtrer sur des valeurs agrégées.
-Contrairement à `WHERE`, il agit sur le résultat du regroupement.
+**HAVING** filtre les résultats d'un `GROUP BY` selon une condition sur les agrégats.
+
+Afficher les pays avec plus de 5 clients :
 
 ```sql
 SELECT
-    Country,
+    country,
     COUNT(*) AS nb_customers
-FROM Customers
-GROUP BY Country
+FROM customers
+GROUP BY country
 HAVING COUNT(*) > 5;
 ```
 
-→ Affiche uniquement les pays ayant plus de 5 clients.
-
 ---
 
-### Sous-requêtes – Requêtes imbriquées
+### Sous-requêtes
 
-Une **sous-requête** est une requête placée à l’intérieur d’une autre.
+Une **sous-requête** est une requête imbriquée à l'intérieur d'une autre. Elle permet d'utiliser un résultat calculé ou filtré pour enchaîner une analyse plus complexe.
 
-Produits plus chers que la moyenne :
+#### Sous-requête simple dans une condition (WHERE)
+
+Lister les produits plus chers que la moyenne :
 
 ```sql
 SELECT
-    ProductName,
-    UnitPrice
-FROM Products
-WHERE UnitPrice > (
-    SELECT AVG(UnitPrice)
-    FROM Products
+    product_name,
+    unit_price
+FROM products
+WHERE unit_price > (
+    SELECT AVG(unit_price)
+    FROM products
 );
 ```
 
-→ La sous-requête calcule le prix moyen, la requête principale affiche les produits supérieurs à cette moyenne.
+Ici, la sous-requête retourne le prix moyen des produits, utilisé dans la condition `WHERE`.
 
 ---
 
-### Ordre logique d’exécution
+#### Sous-requête dans la clause FROM (vue temporaire)
 
-L’ordre dans lequel SQL exécute les clauses :
+Créer une sous-requête servant de table temporaire, souvent appelée **table dérivée** :
 
-1. **FROM** – choisit la table ou la jointure.
-2. **WHERE** – filtre les lignes.
-3. **GROUP BY** – regroupe les lignes.
-4. **HAVING** – filtre les groupes.
-5. **SELECT** – affiche les colonnes demandées.
-6. **ORDER BY** – trie le résultat final.
+```sql
+SELECT category_name, AVG_price
+FROM (
+    SELECT
+        c.category_name,
+        AVG(p.unit_price) AS AVG_price
+    FROM products AS p
+    INNER JOIN categories AS c
+        ON p.category_id = c.category_id
+    GROUP BY c.category_name
+) AS subquery
+WHERE AVG_price > 30;
+```
+
+Ici, la sous-requête calcule le prix moyen par catégorie avant de filtrer celles dont le prix moyen dépasse 30.
 
 ---
 
-## Exercices pratiques
+#### Sous-requête corrélée
 
-1. Lister les 10 produits les plus chers.
-2. Trouver les clients américains.
-3. Compter le nombre de commandes par client.
-4. Calculer la valeur totale de chaque commande.
-5. Lister les produits vendus par chaque fournisseur.
-6. Trouver les catégories contenant plus de 5 produits.
-7. Identifier les clients ayant passé plus de 3 commandes.
-8. Calculer le prix moyen des produits par catégorie.
-9. Lister les employés ayant traité plus de 50 commandes.
-10. Trouver les pays où le nombre de clients dépasse la moyenne.
+Une **sous-requête corrélée** dépend d'une valeur de la requête principale. Elle est exécutée pour chaque ligne.
+
+Afficher les produits dont le prix est supérieur à la moyenne de leur propre catégorie :
+
+```sql
+SELECT
+    p.product_name,
+    p.unit_price,
+    c.category_name
+FROM products AS p
+INNER JOIN categories AS c
+    ON p.category_id = c.category_id
+WHERE p.unit_price > (
+    SELECT AVG(p2.unit_price)
+    FROM products AS p2
+    WHERE p2.category_id = p.category_id
+);
+```
+
+Ici, la sous-requête est recalculée pour chaque catégorie (corrélation via `category_id`).
+
+---
+
+#### Sous-requête avec IN
+
+Afficher les clients ayant passé au moins une commande :
+
+```sql
+SELECT company_name
+FROM customers
+WHERE customer_id IN (
+    SELECT DISTINCT customer_id
+    FROM orders
+);
+```
+
+La sous-requête retourne la liste des clients ayant des commandes, utilisée par `IN` pour filtrer la table principale.
+
+---
+
+#### Sous-requête avec EXISTS
+
+Le mot-clé **EXISTS** vérifie si la sous-requête renvoie au moins une ligne.
+
+Afficher les clients qui ont passé au moins une commande (même résultat que ci-dessus) :
+
+```sql
+SELECT company_name
+FROM customers AS c
+WHERE EXISTS (
+    SELECT 1
+    FROM orders AS o
+    WHERE o.customer_id = c.customer_id
+);
+```
+
+`EXISTS` est souvent plus performant que `IN` lorsque la sous-requête dépend d'une clé étrangère.
+
+---
+
+#### Sous-requête dans la clause SELECT
+
+Une sous-requête peut aussi calculer une valeur dérivée dans une colonne :
+
+```sql
+SELECT
+    c.company_name,
+    (
+        SELECT COUNT(*)
+        FROM orders AS o
+        WHERE o.customer_id = c.customer_id
+    ) AS nb_orders
+FROM customers AS c
+ORDER BY nb_orders DESC;
+```
+
+Cela permet d’ajouter dynamiquement une information agrégée sans passer par une jointure ou un `GROUP BY`.
+
+---
+
+### Ordre logique d'exécution SQL
+
+1. **FROM** – sélection des tables
+2. **WHERE** – filtrage des lignes
+3. **GROUP BY** – regroupement
+4. **HAVING** – filtrage des groupes
+5. **SELECT** – sélection des colonnes
+6. **ORDER BY** – tri final
+7. **LIMIT** – restriction du nombre de lignes
