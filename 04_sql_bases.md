@@ -688,4 +688,4 @@ Cela permet d’ajouter dynamiquement une information agrégée sans passer par 
 
 ### Exercices
 
-Télécharger le script sql contenant la liste d'exercice :  [northwind_queries.sql]({{ 'northwind_queries.sql' | relative_url }})
+Télécharger le script sql contenant la liste d'exercice (MAJ : 17/11/2025):  [northwind_queries.sql]({{ 'northwind_queries.sql' | relative_url }})

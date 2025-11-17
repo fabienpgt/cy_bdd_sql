@@ -6,6 +6,18 @@
 
 **MAJ**
 
+**17/11/2025**
+- Mise à jours de la correction des exercices jusqu'au jointures.
+
+**21/10/2025**
+- Ajout de la base de donnée `Northwind`
+- Mise à jours du cours SQL avec données `Northwind`
+- Ajout des exercices
+
+**14/10/2025**
+- Ajout de la grille d'évaluation du devoir maison
+- Mise à jour de la date de rendue du devoir maison
+
 **30/09/2025**
 - Ajout de la page [SQL - Les Bases](04_sql_bases.md)
 - Ajout du jeu de données `festival.zip`
