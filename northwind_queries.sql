@@ -176,9 +176,36 @@ SELECT
 FROM employees e1 
 INNER JOIN employees e2 ON e1.reports_to = e2.employee_id; 
 
+
 -- Afficher, pour chaque ligne de order_details, le product correspondant, la quantity et le unit_price appliqué.
+SELECT 
+    od.order_id,
+    od.product_id,
+    p.product_name,
+    od.quantity,
+    od.unit_price
+FROM order_details od
+INNER JOIN products p 
+    ON p.product_id = od.product_id;
+
+
 -- Afficher les customers n’ayant jamais passé de commande.
+SELECT 
+    c.*
+FROM customers c
+LEFT JOIN orders o 
+    ON o.customer_id = c.customer_id
+WHERE o.order_id IS NULL;
+
+
 -- Afficher les produits qui n'apparaissent dans aucune commande.
+SELECT 
+    p.*
+FROM products p
+LEFT JOIN order_details od 
+    ON od.product_id = p.product_id
+WHERE od.order_id IS NULL;
+
 
 
 -- ------------------------------------------
