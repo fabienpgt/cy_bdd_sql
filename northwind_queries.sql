@@ -208,46 +208,134 @@ WHERE od.order_id IS NULL;
 
 
 
--- ------------------------------------------
--- AGRÉGATIONS ET SYNTHÈSES
--- ------------------------------------------
--- Afficher le nombre de customers par country.
--- Afficher le nombre de products par category.
--- Afficher le prix moyen des products pour chaque supplier.
--- Afficher l’order au coût de transport (freight) le plus élevé.
--- Afficher, pour chaque order, le montant total calculé à partir des order_details.
--- Afficher les categories dont le prix moyen des products dépasse une valeur donnée.
--- Afficher les countries comptant un volume notable de customers.
--- Afficher les suppliers disposant d’un large catalogue de products.
--- Afficher la quantité moyenne commandée pour chaque product.
--- Afficher le chiffre d’affaires total regroupé par ship_country.
+-- ============================================================
+-- EXERCICES : AGRÉGATIONS & SOUS-REQUÊTES
+-- ============================================================
+
+-- ------------------------------------------------------------
+-- 1) AGRÉGATIONS SANS GROUP BY
+-- ------------------------------------------------------------
+
+-- Calculer le prix moyen de tous les produits du catalogue (table products).
 
 
--- ---------------------------------------------
--- SOUS-REQUÊTES
--- ---------------------------------------------
--- Afficher les products dont le unit_price dépasse la moyenne globale des products.
--- Afficher les products dont le unit_price dépasse la moyenne de leur propre category.
--- Afficher les customers ayant déjà passé au moins une order.
--- Afficher les customers n’ayant jamais passé d’order en évitant les pièges liés aux valeurs manquantes.
--- Afficher les products apparaissant dans un grand nombre d’orders distinctes.
--- Afficher les orders dont le total dépasse la moyenne de l’ensemble des orders.
--- Afficher les employees dont le volume d’orders gérées excède la moyenne des employees.
--- Afficher les products plus chers que tous les products de la category 'Beverages'.
--- Afficher les customers ayant commandé au moins un product au prix unitaire maximal du catalogue.
--- Afficher les suppliers proposant au moins un product au prix unitaire maximal.
+-- Compter le nombre total de commandes enregistrées (table orders).
 
 
--- --------------------------------------------------------------
--- REQUÊTES AVANCEES
--- --------------------------------------------------------------
--- Afficher un classement des categories selon le total des ventes réalisées.
--- Afficher les customers ayant au moins une order expédiée par un transporteur donné.
--- Afficher le product le plus commandé (en quantité totale) ainsi que le chiffre d’affaires qu’il génère.
--- Afficher le mois présentant le plus fort chiffre d’affaires.
--- Afficher, pour chaque category, un ensemble d’indicateurs : nombre de products, prix moyen, stock total.
--- Afficher les employees supervisant au moins trois collègues.
--- Afficher les categories dont tous les products sont encore commercialisés.
--- Afficher les products n’ayant jamais été commandés.
--- Afficher, via une CTE, les cinq customers au plus fort chiffre d’affaires cumulé.
--- Afficher, en synthèse finale, pour chaque customer : le nombre d’orders, le chiffre d’affaires total et le pays de livraison.
+-- Trouver le prix unitaire minimum et le prix unitaire maximum parmi tous les produits (table products).
+
+
+-- Calculer la quantité totale vendue (somme de quantity) sur l’ensemble des lignes de commande (table order_details).
+
+
+-- Calculer le chiffre d’affaires total global sur toutes les commandes,
+-- en utilisant unit_price, quantity et discount dans la table order_details.
+
+
+-- ------------------------------------------------------------
+-- 2) AGRÉGATIONS AVEC GROUP BY
+-- ------------------------------------------------------------
+
+
+-- Afficher le nombre de produits par catégorie.
+-- (tables products et categories, regroupement par category_name ou category_id).
+
+
+-- Afficher le nombre de clients par pays.
+-- (table customers, regroupement par country).
+
+
+-- Afficher le montant total des ventes pour chaque commande.
+-- (table order_details, regroupement par order_id).
+
+
+-- Afficher le prix moyen des produits pour chaque fournisseur.
+-- (tables products et suppliers, regroupement par supplier_id ou company_name).
+
+
+-- Afficher la quantité totale commandée pour chaque produit.
+-- (tables products et order_details, regroupement par product_id / product_name).
+
+
+-- ------------------------------------------------------------
+-- 3) AGRÉGATIONS AVEC HAVING
+-- ------------------------------------------------------------
+
+
+-- Afficher les catégories dont le prix moyen des produits dépasse 30.
+-- (GROUP BY sur la catégorie + HAVING sur AVG(unit_price) > 30).
+
+
+-- Afficher les pays comptant au moins 5 clients.
+-- (GROUP BY country + HAVING COUNT(*) >= 5).
+
+
+-- Afficher les fournisseurs ayant au moins 10 produits dans leur catalogue.
+-- (GROUP BY supplier_id + HAVING COUNT(*) >= 10).
+
+
+-- Afficher les produits dont la quantité totale commandée dépasse 500 unités.
+-- (GROUP BY product_id + HAVING SUM(quantity) > 500).
+
+
+-- Afficher les commandes dont le montant total dépasse 1 000 (monnaie du catalogue).
+-- (GROUP BY order_id + HAVING SUM(unit_price * quantity * (1 - discount)) > 1000).
+
+
+-- ------------------------------------------------------------
+-- 4) SOUS-REQUÊTES DANS WHERE
+-- ------------------------------------------------------------
+
+-- Afficher les produits dont le prix unitaire est supérieur au prix unitaire moyen
+-- de l’ensemble des produits.
+-- (Sous-requête dans WHERE pour calculer AVG(unit_price)).
+
+
+-- Afficher les produits dont le prix unitaire dépasse la moyenne des produits
+-- de leur propre catégorie.
+-- (Sous-requête corrélée dans WHERE, filtrée par category_id).
+
+
+-- Afficher les clients ayant passé au moins une commande,
+-- en utilisant une sous-requête dans WHERE (IN ou EXISTS) sur la table orders.
+
+
+-- Afficher les commandes dont le montant total est supérieur
+-- au montant total moyen de l’ensemble des commandes.
+-- (Sous-requête dans WHERE pour comparer chaque total à la moyenne des totaux).
+
+
+-- Afficher les produits dont la quantité totale vendue est supérieure
+-- à la quantité totale moyenne vendue par produit.
+-- (Sous-requête dans WHERE pour comparer SUM(quantity) par produit
+--  à la moyenne de ces sommes).
+
+
+-- ------------------------------------------------------------
+-- 5) SOUS-REQUÊTES DANS SELECT
+-- ------------------------------------------------------------
+
+
+-- Afficher chaque client (table customers) avec, dans une colonne calculée,
+-- le nombre de commandes qu’il a passées (sous-requête dans SELECT sur orders).
+
+
+-- Afficher chaque produit (table products) avec, dans une colonne calculée,
+-- le montant total qu’il a généré en ventes
+-- (sous-requête dans SELECT basée sur order_details).
+
+
+-- Afficher chaque catégorie (table categories) avec :
+-- - le prix moyen de tous les produits du catalogue,
+-- - et le prix moyen de la catégorie,
+-- dans deux colonnes calculées dans le SELECT.
+
+
+-- Afficher chaque fournisseur (table suppliers) avec :
+-- - le prix moyen de ses propres produits,
+-- - et, dans une autre colonne, le prix moyen des produits des autres fournisseurs
+--   (sous-requête dans SELECT qui exclut le supplier courant).
+
+-- Afficher chaque commande (table orders) avec, dans une colonne calculée,
+-- le montant total de la commande
+-- (sous-requête dans SELECT basée sur order_details pour cette order_id).
