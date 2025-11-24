@@ -414,3 +414,30 @@ WHERE product_id NOT IN (
     FROM order_details
 )
 ORDER BY product_name;
+
+-- Afficher les commandes dont les frais de port (freight)
+-- sont supérieurs aux frais de port moyens de l’ensemble des commandes.
+SELECT
+    order_id,
+    customer_id,
+    order_date,
+    freight
+FROM orders
+WHERE freight > (
+    SELECT AVG(freight)
+    FROM orders
+)
+ORDER BY freight DESC;
+
+-- Afficher les clients ayant passé au moins une commande
+-- après le 1er janvier 1998
+SELECT
+    customer_id,
+    company_name
+FROM customers
+WHERE customer_id IN (
+    SELECT DISTINCT customer_id
+    FROM orders
+    WHERE order_date >= '1998-01-01'
+)
+ORDER BY company_name;
