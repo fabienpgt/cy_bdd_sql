@@ -6,8 +6,11 @@
 
 **MAJ**
 
+**23/11/2025**
+- Mise à jour des exercices
+
 **17/11/2025**
-- Mise à jours de la correction des exercices jusqu'au jointures.
+- Mise à jour de la correction des exercices jusqu'au jointures.
 
 **21/10/2025**
 - Ajout de la base de donnée `Northwind`
