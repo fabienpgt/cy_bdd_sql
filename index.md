@@ -3,8 +3,14 @@
 - [De la modélisation à la conception d’une base de données](02_Modelisation.md)
 - [Devoir Maison](03_Devoir_maison.md)
 - [SQL - Les Bases](04_sql_bases.md)
+- [Examen final](05_examen_final.md)
+
 
 **MAJ**
+
+**25/11/2025**
+- Ajout exercices de révision
+- Ajout base de données pour examen final
 
 **23/11/2025**
 - Mise à jour des exercices
