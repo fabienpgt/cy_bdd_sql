@@ -607,3 +607,5 @@ Ici, la sous-requête calcule le prix moyen par catégorie avant de filtrer cell
 ### Exercices
 
 Télécharger le script sql contenant la liste d'exercice (MAJ : 17/11/2025):  [northwind_queries.sql]({{ 'northwind_queries.sql' | relative_url }})
+
+Télécharger la liste d'exercice pour les révisions (MAJ : 25/11/2025):  [northwind_revision.sql]({{ 'northwind_revision.sql' | relative_url }})
