@@ -34,6 +34,9 @@ La **forme** de vos requêtes fait partie de l’évaluation. Vous devez respect
 - Il existe **2 sujets distincts** (Sujet A et Sujet B).
 - Vous devez **réaliser uniquement le sujet qui vous a été attribué**.
 
+[Examen_SujetA.sql]({{ '/documents/Examen_SujetA.sql' | relative_url }}) 
+[Examen_SujetB.sql]({{ '/documents/Examen_SujetB.sql' | relative_url }})
+
 ### Rendu
 
 - À la fin de l’examen, envoyez votre fichier **`.sql`** à l’adresse suivante :  
